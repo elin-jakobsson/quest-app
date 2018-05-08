@@ -5,6 +5,7 @@ import Profile from './components/profile/profile'
 import Questions from './components/questions/questions'
 import Categories from './components/categories/categories.js';
 import QuestStart from './components/queststart/queststart.js';
+import QuestBar from './components/questbar/questbar.js';
 
 
 // Test array från firebase
@@ -87,6 +88,7 @@ class App extends Component {
         <Questions questionArray={questionArray}/>
         <Categories />
         <QuestStart />
+        <QuestBar />
       </div>
     );
   }
