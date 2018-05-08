@@ -4,6 +4,7 @@ import * as firebase from 'firebase';
 import Profile from './components/profile/profile'
 import Questions from './components/questions/questions'
 import Categories from './components/categories/categories.js';
+import QuestStart from './components/queststart/queststart.js';
 
 // Test array från firebase
 const questionArray = [{quest:'Vad står HTML för?',
@@ -67,6 +68,7 @@ class App extends Component {
         <Profile/>
         <Questions questionArray={questionArray}/>
         <Categories />
+        <QuestStart />
       </div>
     );
   }
