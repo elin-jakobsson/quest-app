@@ -44,12 +44,29 @@ firebase.database().ref('quests/').once('value').then(snap=>{
 */
 //var newPostKey = firebase.database().ref('Games/').child('posts').push().key;   // hämtar ny nyckel
 
-
 class App extends Component {
   constructor(props){
     super(props)
   }
+// Add quest in componentDidMount
+  addQuestToFirebase = () => {
+    let db = firebase.database();
+    var newPostKey = db.ref('quests/').child('posts').push().key;
+    let quest = {
+      a : "15",
+      b : "50",
+      c : "100",
+      d : "1000",
+      category : "css",
+      id : newPostKey,
+      question : "Vad har inline-style för specificitetsvärde i CSS?",
+      rightanswer : "d"
+    }
+    db.ref(`quests/${newPostKey}`).set(quest);
+  }
+
   componentDidMount(){
+    // this.addQuestToFirebase();
     // call for firebase or ajax here
     //start all calls
     // kalla på db.ref () med en färdig funktion, referera till en existerande funktion.
