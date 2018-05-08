@@ -1,0 +1,43 @@
+.container-queststart{
+  display: flex;
+  flex-direction: column;
+  min-height: 500px;
+  justify-content: center;
+  align-items: center;
+}
+.container-queststart .wrapper{
+  display: flex;
+  align-items: center;
+  background-color: #223F55;
+  flex: 1 1;
+  max-width: 90%;
+  height: 100%;
+  width: 90%;
+  margin: 10px auto;
+  flex-direction: column;
+}
+.container-queststart .wrapper .box{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  height: 130px;
+  margin-top: 100px;
+  background-color: #2F648B;
+  font-size: 2.4em;
+}
+.container-queststart .wrapper div{
+  margin-top: 20px;
+  color: #16CAB0;
+}
+.container-queststart .wrapper span{
+  margin-top: 20px;
+}
+.container-queststart .wrapper button{
+  margin-top: 30px;
+  width: 200px;
+  height: 50px;
+  background-color: #FFC216;
+  border-radius: 5px;
+  font-size: 1.3em;
+}
