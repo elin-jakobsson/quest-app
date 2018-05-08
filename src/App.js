@@ -3,6 +3,7 @@ import './App.css';
 import * as firebase from 'firebase';
 import Profile from './components/profile/profile'
 import Questions from './components/questions/questions'
+import Categories from './components/categories/categories.js';
 
 
 // Test array från firebase
@@ -28,11 +29,11 @@ var config = {
  };
 firebase.initializeApp(config);
 
+/*
 firebase.database().ref().once('value').then(snap=>{
   let data = snap.val();
   console.log(data);
 })
-/*
 firebase.database().ref('users/').once('value').then(snap=>{
   let data = snap.val();
   console.log(data);
@@ -66,6 +67,7 @@ class App extends Component {
       <div className="App">
         <Profile/>
         <Questions questionArray={questionArray}/>
+        <Categories />
       </div>
     );
   }
