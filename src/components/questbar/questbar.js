@@ -1,7 +1,7 @@
 import React from 'react';
 import './questbar.css';
 
-let list = [0,1,0,0,1,1,2,2,0,"x"]; // skall komma från props!! :) 
+let list = [0,1,0,0,1,1,2,2,0,"x"]; // skall komma från props!! :)
 let bgColor = {
   0 : "rgba(232, 85, 93, 0.8)",
   1 : "rgba(96, 171, 37, 0.8)",
