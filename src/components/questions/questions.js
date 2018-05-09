@@ -1,14 +1,24 @@
 import React, { Component } from 'react';
 import './questions.css';
+import Timer from '../timer/timer'
 
 
 class Questions extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      questionArray: props.questionArray
+      questionArray: props.questionArray,
+      changequest : false
 
     }
+  }
+// Function that will change state when the timer ends
+  timesUp = (timerFinished) => {
+      if (timerFinished) {
+          this.setState({changequest : true}, () => {
+            console.log("Changequest status : " + this.state.changequest);
+          })
+      }
   }
 
   // Shuffle function send in object and the function shuffles the in a random order
@@ -48,7 +58,7 @@ class Questions extends Component {
   render() {
     return (
       <div>
-
+        <Timer startValue={10} timeBool={false} timesUp={this.timesUp} />
         {this.shuffleArray(this.state.questionArray)}
 
       </div>

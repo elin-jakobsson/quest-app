@@ -1,0 +1,10 @@
+.container-questbar {
+  display: flex;
+}
+
+.boxBar{
+  flex:1;
+  height: 15px;
+  margin:5px;
+  border-radius: 3px;
+}
