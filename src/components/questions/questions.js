@@ -30,11 +30,11 @@ class Questions extends Component {
 
  // Fåge display för testvarianten
   let questElements = array.map((x,index) => {
-      let alternativList = x.alternativ.map((z)=>{
+      let alternativList = x.alternativ.map((z,index)=>{
         return(
-        <label key={'key'+z.index}><input type="radio" name={'quiz'+z.index} value=""/>{z}</label>
+        <label key={'radio'+ index}><input type="radio" name={'quiz'+z.index} value=""/>{z}</label>
       )});
-    return(<div key={index}>
+    return(<div key={'quets' + index}>
        <h1>{x.quest}</h1>
        <form>
        {alternativList}
