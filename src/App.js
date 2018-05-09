@@ -50,11 +50,14 @@ firebase.database().ref('quests/').once('value').then(snap=>{
 
 class App extends Component {
   constructor(props){
-    super(props)
+    super(props);
     this.state = {
       currentPage: "Spel"
     }
   }
+
+// Get the HTML,CSS and JS question
+  getQuestFromFirebase = () => {}
 // Add quest in componentDidMount
   addQuestToFirebase = () => {
     let db = firebase.database();
