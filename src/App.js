@@ -5,6 +5,9 @@ import Profile from './components/profile/profile'
 import Questions from './components/questions/questions'
 import Categories from './components/categories/categories.js';
 import Login from './components/login/login';
+import QuestStart from './components/queststart/queststart.js';
+import QuestBar from './components/questbar/questbar.js';
+import Menu from './components/menu/menu.js';
 
 
 // Test array från firebase
@@ -50,6 +53,9 @@ firebase.database().ref('quests/').once('value').then(snap=>{
 class App extends Component {
   constructor(props){
     super(props)
+    this.state = {
+      currentPage: "Spel"
+    }
   }
 // Add quest in componentDidMount
   addQuestToFirebase = () => {
@@ -85,6 +91,10 @@ class App extends Component {
   componentDidCatch(error, info){
     // fånga error
   }
+
+  changePage = (item) => {
+    this.setState({ currentPage : item })
+  }
   render() {
     return (
       <div className="App">
@@ -92,6 +102,9 @@ class App extends Component {
         <Login firebase={firebase} updateUser={this.getUserInfo}/>
         <Questions questionArray={questionArray} />
         <Categories />
+        <QuestStart />
+        <QuestBar />
+        <Menu changePage={this.changePage} currentPage={this.state.currentPage}/>
       </div>
     );
   }
