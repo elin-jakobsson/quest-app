@@ -34,9 +34,9 @@ class Questions extends Component {
       )});
     return(<div key={'quets' + index}>
        <h1>{x.quest}</h1>
-       <form>
+       <div>
        {alternativList}
-       </form>
+       </div>
    </div>);
  });
 
