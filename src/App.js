@@ -4,6 +4,7 @@ import * as firebase from 'firebase';
 import Profile from './components/profile/profile'
 import Questions from './components/questions/questions'
 import Categories from './components/categories/categories.js';
+import Login from './components/login/login';
 import QuestStart from './components/queststart/queststart.js';
 import QuestBar from './components/questbar/questbar.js';
 import Menu from './components/menu/menu.js';
@@ -31,6 +32,7 @@ var config = {
    messagingSenderId: "85647486236"
  };
 firebase.initializeApp(config);
+const db = firebase.database();
 
 /*
 firebase.database().ref().once('value').then(snap=>{
@@ -57,8 +59,7 @@ class App extends Component {
   }
 // Add quest in componentDidMount
   addQuestToFirebase = () => {
-    let db = firebase.database();
-    var newPostKey = db.ref('quests/').child('posts').push().key;
+    let newPostKey = db.ref('quests/').child('posts').push().key;
     let quest = {
       a : "15",
       b : "50",
@@ -72,7 +73,12 @@ class App extends Component {
     db.ref(`quests/${newPostKey}`).set(quest);
   }
 
+  getUserInfo = (userObj) =>{
+    console.log(userObj);
+  }
+
   componentDidMount(){
+    this.getUserInfo();
     // this.addQuestToFirebase();
     // call for firebase or ajax here
     //start all calls
@@ -93,7 +99,8 @@ class App extends Component {
     return (
       <div className="App">
         <Profile/>
-        <Questions questionArray={questionArray}/>
+        <Login firebase={firebase} updateUser={this.getUserInfo}/>
+        <Questions questionArray={questionArray} />
         <Categories />
         <QuestStart />
         <QuestBar />

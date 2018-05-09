@@ -38,7 +38,7 @@ class Timer extends Component {
         this.interval = setInterval(this.tick, 1000);
     }
     render() {
-        return (<div>{this.state.secondsRemaining}</div>);
+        return (<div className="component">{this.state.secondsRemaining}</div>);
     }
 }
 export default Timer;
