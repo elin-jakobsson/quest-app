@@ -54,7 +54,8 @@ class App extends Component {
   constructor(props){
     super(props)
     this.state = {
-      currentPage: "Spel"
+      currentPage: "Spel",
+      currentUser : ""
     }
   }
 // Add quest in componentDidMount
@@ -74,9 +75,14 @@ class App extends Component {
   }
 
   getUserInfo = (userObj) =>{
-    console.log(userObj);
+    if(typeof userObj === "object"){
+      this.setState({currentUser : userObj})
+    }
   }
 
+  // showProfile () =>{
+  //
+  // }
   componentDidMount(){
     this.getUserInfo();
     // this.addQuestToFirebase();
@@ -96,9 +102,14 @@ class App extends Component {
     this.setState({ currentPage : item })
   }
   render() {
+    let user;
+    if(typeof this.state.currentUser === "object"){
+      user = this.state.currentUser;
+    }
+
     return (
       <div className="App">
-        <Profile/>
+        <Profile userinfo = {user} alterProfile = {this.state.currentPage}/>
         <Login firebase={firebase} updateUser={this.getUserInfo}/>
         <Questions questionArray={questionArray} />
         <Categories />
