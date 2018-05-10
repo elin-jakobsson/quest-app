@@ -8,6 +8,8 @@ import Login from './components/login/login';
 import QuestStart from './components/queststart/queststart.js';
 import QuestBar from './components/questbar/questbar.js';
 import Menu from './components/menu/menu.js';
+import CountScore from './components/countscore/countscore.js';
+
 
 
 // Test array från firebase
@@ -34,30 +36,22 @@ var config = {
 firebase.initializeApp(config);
 const db = firebase.database();
 
-/*
-firebase.database().ref().once('value').then(snap=>{
-  let data = snap.val();
-  console.log(data);
-})
-firebase.database().ref('users/').once('value').then(snap=>{
-  let data = snap.val();
-  console.log(data);
-})
-firebase.database().ref('quests/').once('value').then(snap=>{
-  let data = snap.val();
-  console.log(data);
-})
-*/
-//var newPostKey = firebase.database().ref('Games/').child('posts').push().key;   // hämtar ny nyckel
+
 
 class App extends Component {
   constructor(props){
-    super(props)
+    super(props);
     this.state = {
       currentPage: "Spel",
-      currentUser : ""
+      currentUser : "",
+      selectedCategori : "",
+      allGames : "",
+      allQuests : ""
     }
   }
+
+// Get the HTML,CSS and JS question
+  getQuestFromFirebase = () => {}
 // Add quest in componentDidMount
   addQuestToFirebase = () => {
     let newPostKey = db.ref('quests/').child('posts').push().key;
@@ -89,6 +83,7 @@ class App extends Component {
     // call for firebase or ajax here
     //start all calls
     // kalla på db.ref () med en färdig funktion, referera till en existerande funktion.
+    this.getDataFromFirebase();
   }
   componentWillUnmount(){
     // close all calls
@@ -98,8 +93,24 @@ class App extends Component {
     // fånga error
   }
 
+
+  getDataFromFirebase = () => {
+      db.ref('games/').once('value').then(snap=>{
+      let data = snap.val();
+      this.setState({ allGames : data })
+    })
+      db.ref('quests/').once('value').then(snap=>{
+      let data = snap.val();
+      this.setState({ allQuests : data })
+    })
+  }
+
   changePage = (item) => {
     this.setState({ currentPage : item })
+  }
+
+  chooseCategori = (item) => {
+    this.setState({selectedCategori : item})
   }
   render() {
     let user;
@@ -112,13 +123,32 @@ class App extends Component {
         <Profile userinfo = {user} alterProfile = {this.state.currentPage}/>
         <Login firebase={firebase} updateUser={this.getUserInfo}/>
         <Questions questionArray={questionArray} />
-        <Categories />
+        <Categories selectedCategori={this.chooseCategori} />
         <QuestStart />
         <QuestBar />
         <Menu changePage={this.changePage} currentPage={this.state.currentPage}/>
+        <CountScore />
       </div>
     );
   }
 }
 
 export default App;
+
+
+
+/*
+firebase.database().ref().once('value').then(snap=>{
+  let data = snap.val();
+  console.log(data);
+})
+firebase.database().ref('users/').once('value').then(snap=>{
+  let data = snap.val();
+  console.log(data);
+})
+firebase.database().ref('quests/').once('value').then(snap=>{
+  let data = snap.val();
+  console.log(data);
+})
+*/
+//var newPostKey = firebase.database().ref('Games/').child('posts').push().key;   // hämtar ny nyckel
