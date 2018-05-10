@@ -45,8 +45,8 @@ class App extends Component {
       currentPage: "Spel",
       currentUser : "",
       selectedCategori : "",
-      allGames : "g",
-      allQuests : "q"
+      allGames : "",
+      allQuests : ""
     }
   }
 
@@ -56,13 +56,14 @@ class App extends Component {
   addQuestToFirebase = () => {
     let newPostKey = db.ref('quests/').child('posts').push().key;
     let quest = {
-      a : "I en extern fil",
-      b : "head",
-      c : "body",
+      a : "15",
+      b : "50",
+      c : "100",
+      d : "1000",
       category : "css",
       id : newPostKey,
-      question : "Var placerar man style taggen i ett HTML document?",
-      rightanswer : "b"
+      question : "Vad har inline-style för specificitetsvärde i CSS?",
+      rightanswer : "d"
     }
     db.ref(`quests/${newPostKey}`).set(quest);
   }
@@ -121,13 +122,13 @@ class App extends Component {
       <div className="App">
         <Profile userinfo = {user} alterProfile = {this.state.currentPage}/>
         <Login firebase={firebase} updateUser={this.getUserInfo}/>
-        <Questions games={this.state.allGames} quests={this.state.allQuests}/>
+        <Questions allGames={this.state.allGames} allQuests={this.state.allQuests}/>
         <Categories selectedCategori={this.chooseCategori} />
         <QuestStart />
         <QuestBar />
         <Menu changePage={this.changePage} currentPage={this.state.currentPage}/>
         <CountScore />
-      
+
       </div>
     );
   }

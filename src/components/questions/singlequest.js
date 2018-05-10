@@ -5,15 +5,19 @@ import './questions.css';
 class SingleQuest extends Component {
   constructor(props){
     super(props);
-
-    this.state = {
-
-    }
   } // constructor()
 
-
   render(){
-    return (<p>test SingleQuest</p>);
+    // let index = this.props.qurrentQuestion;
+    // let questionArray = this.props.questionArray;
+    // let question = questionArray[this.props.qurrentQuestion].question;
+    // console.log(index);
+    // console.log(questionArray[index].question);
+    return (<div>
+            <h1>hello</h1>
+
+
+          </div>);
 
   }// Render()
 
