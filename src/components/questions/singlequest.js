@@ -7,13 +7,14 @@ class SingleQuest extends Component {
     super(props);
 
     this.state={
-      
+
     }
   } // constructor()
 
 
   render(){
 
+    return(<div></div>)
 
   }// Render()
 

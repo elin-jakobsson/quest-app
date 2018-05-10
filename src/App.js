@@ -8,6 +8,8 @@ import Login from './components/login/login';
 import QuestStart from './components/queststart/queststart.js';
 import QuestBar from './components/questbar/questbar.js';
 import Menu from './components/menu/menu.js';
+import CountScore from './components/countscore/countscore.js';
+
 
 
 // Test array från firebase
@@ -108,6 +110,7 @@ class App extends Component {
         <QuestStart />
         <QuestBar />
         <Menu changePage={this.changePage} currentPage={this.state.currentPage}/>
+        <CountScore />
       </div>
     );
   }
