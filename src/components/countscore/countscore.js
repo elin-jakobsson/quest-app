@@ -6,17 +6,13 @@ let listOfAnswer = [0,1,1,2,"x","x","x","x","x","x"]
 const CountScore = props => {
 
   let calcFunction = (current, bonusCount) => {
-    console.log("bonusStege: " + bonusCount);
     if(bonusCount > 1 ) {
-      console.log("Bonus!");
       return (current += 15 + 10 * (bonusCount-1))
     }else if (bonusCount >= 1 ) {
       return (current += 15)
     }else{
       return current
     }
-
-
   }
 
   let scoreCount = (array,calculate,start) => {
@@ -29,7 +25,6 @@ const CountScore = props => {
         bonusCount = 0
       }
       current = calculate(current, bonusCount)
-      console.log("current" + current);
     }
     return current
   };

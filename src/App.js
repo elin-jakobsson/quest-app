@@ -43,6 +43,7 @@ class App extends Component {
     super(props);
     this.state = {
       currentPage: "Spel",
+      currentUser : "",
       selectedCategori : "",
       allGames : "g",
       allQuests : "q"
@@ -67,9 +68,14 @@ class App extends Component {
   }
 
   getUserInfo = (userObj) =>{
-    console.log(userObj);
+    if(typeof userObj === "object"){
+      this.setState({currentUser : userObj})
+    }
   }
 
+  // showProfile () =>{
+  //
+  // }
   componentDidMount(){
     this.getUserInfo();
     // this.addQuestToFirebase();
@@ -106,9 +112,14 @@ class App extends Component {
     this.setState({selectedCategori : item})
   }
   render() {
+    let user;
+    if(typeof this.state.currentUser === "object"){
+      user = this.state.currentUser;
+    }
+
     return (
       <div className="App">
-        <Profile/>
+        <Profile userinfo = {user} alterProfile = {this.state.currentPage}/>
         <Login firebase={firebase} updateUser={this.getUserInfo}/>
         <Questions games={this.state.allGames} quests={this.state.allQuests}/>
         <Categories selectedCategori={this.chooseCategori} />

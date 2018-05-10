@@ -61,13 +61,14 @@ class Login extends Component {
         }
 
         return (<div className="component container-login">
-            <div></div>
             <div>
                 <img alt="Logo"></img>
             </div>
             <div className="loginSection">
+              <h2>Logga in </h2>
+              <div className="greyBorder"></div>
                 <button onClick={() => this.authRedirect("Google")}>
-                    <div className="logoContainer"><img src={logos.googleLogo}/>
+                    <div className="logoContainer"><img alt="" src={logos.googleLogo}/>
                     </div>
                     <div className="btnTextContainer">
                         <span>Google</span>
@@ -75,13 +76,13 @@ class Login extends Component {
                 </button>
 
                 <button onClick={() => this.authRedirect("Github")}>
-                    <div className="logoContainer"><img src={logos.githubLogo}/></div>
+                    <div className="logoContainer"><img alt="" src={logos.githubLogo}/></div>
                     <div className="btnTextContainer">
                         <span>Github</span>
                     </div>
                 </button>
                 <button onClick={() => this.authRedirect("Facebook")}>
-                    <div className="logoContainer"><img src={logos.facebookLogo}/></div>
+                    <div className="logoContainer"><img alt="" src={logos.facebookLogo}/></div>
                     <div className="btnTextContainer">
                         <span>Facebook</span>
                     </div>
