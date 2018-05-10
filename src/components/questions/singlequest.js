@@ -6,14 +6,14 @@ class SingleQuest extends Component {
   constructor(props){
     super(props);
 
-    this.state={
-      
+    this.state = {
+
     }
   } // constructor()
 
 
   render(){
-
+    return (<p>test SingleQuest</p>);
 
   }// Render()
 
