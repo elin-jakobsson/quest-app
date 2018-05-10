@@ -13,24 +13,29 @@ class Statistic extends React.Component{
   handleClick = (item) => {
     console.log("hejsan", item);
     this.setState({selectedStatistic : item })
-    if(item === "HihgestScore"){
-      this.getHihgestScore()
-      }
   }
 
   populateMenu = () => {
     let list = ["HihgestScore", "HighestScoreByCategory"];
     let newLiList = list.map( item => {
       return (
-        <li onClick={ () => this.handleClick(item) }> { item } </li>
+        <li onClick={ () => this.handleClick(item) } key={ item }> { item } </li>
       )
     })
     return (<ul> { newLiList } </ul>)
   }
 
   getHihgestScore = () => {
-    console.log(this.props.games)
-    return "hihgestScore"
+    console.log("the list is called");
+    let list = this.props.games;
+    let newList = [];
+    for(let item in list){
+      console.log(item);
+      newList.push(
+        (<li>{ item }</li>)
+      )
+    }
+    return (<ul>{newList}</ul>);
   }
 
   render(){
