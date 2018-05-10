@@ -9,6 +9,7 @@ import QuestStart from './components/queststart/queststart.js';
 import QuestBar from './components/questbar/questbar.js';
 import Menu from './components/menu/menu.js';
 import CountScore from './components/countscore/countscore.js';
+import Statistic from './components/statistic/statistic.js';
 
 
 
@@ -117,6 +118,7 @@ class App extends Component {
         <QuestBar />
         <Menu changePage={this.changePage} currentPage={this.state.currentPage}/>
         <CountScore />
+        <Statistic games ={ this.state.allGames } />
       </div>
     );
   }
