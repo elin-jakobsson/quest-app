@@ -8,6 +8,8 @@ import Login from './components/login/login';
 import QuestStart from './components/queststart/queststart.js';
 import QuestBar from './components/questbar/questbar.js';
 import Menu from './components/menu/menu.js';
+import CountScore from './components/countscore/countscore.js';
+
 
 
 // Test array från firebase
@@ -54,7 +56,8 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      currentPage: "Spel"
+      currentPage: "Spel",
+      selectedCategori : ""
     }
   }
 
@@ -98,16 +101,21 @@ class App extends Component {
   changePage = (item) => {
     this.setState({ currentPage : item })
   }
+
+  chooseCategori = (item) => {
+    this.setState({selectedCategori : item})
+  }
   render() {
     return (
       <div className="App">
         <Profile/>
         <Login firebase={firebase} updateUser={this.getUserInfo}/>
         <Questions questionArray={questionArray} />
-        <Categories />
+        <Categories selectedCategori={this.chooseCategori} />
         <QuestStart />
         <QuestBar />
         <Menu changePage={this.changePage} currentPage={this.state.currentPage}/>
+        <CountScore />
       </div>
     );
   }
