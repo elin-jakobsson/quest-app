@@ -2,15 +2,9 @@ import React from 'react';
 import './categories.css'
 
 export default class Categories extends React.Component{
-  state = {
-    selectedCategori : 0
-  }
 
   changeCategori = (item) => {
-    console.log(item);
-    this.setState({
-      selectedCategori : item
-    })
+    this.props.selectedCategori(item.toLowerCase());
   }
 
   setupCategoriLi = (list) => {
@@ -57,7 +51,7 @@ export default class Categories extends React.Component{
 
     return(
         <div className="component container-categories">
-          {categoriesList}
+          { categoriesList }
         </div>
     ); // return end
   }; // render end
