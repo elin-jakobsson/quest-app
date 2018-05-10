@@ -36,28 +36,16 @@ var config = {
 firebase.initializeApp(config);
 const db = firebase.database();
 
-/*
-firebase.database().ref().once('value').then(snap=>{
-  let data = snap.val();
-  console.log(data);
-})
-firebase.database().ref('users/').once('value').then(snap=>{
-  let data = snap.val();
-  console.log(data);
-})
-firebase.database().ref('quests/').once('value').then(snap=>{
-  let data = snap.val();
-  console.log(data);
-})
-*/
-//var newPostKey = firebase.database().ref('Games/').child('posts').push().key;   // hämtar ny nyckel
+
 
 class App extends Component {
   constructor(props){
     super(props);
     this.state = {
       currentPage: "Spel",
-      selectedCategori : ""
+      selectedCategori : "",
+      allGames : "",
+      allQuests : ""
     }
   }
 
@@ -89,6 +77,7 @@ class App extends Component {
     // call for firebase or ajax here
     //start all calls
     // kalla på db.ref () med en färdig funktion, referera till en existerande funktion.
+    this.getDataFromFirebase();
   }
   componentWillUnmount(){
     // close all calls
@@ -96,6 +85,18 @@ class App extends Component {
   }
   componentDidCatch(error, info){
     // fånga error
+  }
+
+
+  getDataFromFirebase = () => {
+      db.ref('games/').once('value').then(snap=>{
+      let data = snap.val();
+      this.setState({ allGames : data })
+    })
+      db.ref('quests/').once('value').then(snap=>{
+      let data = snap.val();
+      this.setState({ allQuests : data })
+    })
   }
 
   changePage = (item) => {
@@ -122,3 +123,21 @@ class App extends Component {
 }
 
 export default App;
+
+
+
+/*
+firebase.database().ref().once('value').then(snap=>{
+  let data = snap.val();
+  console.log(data);
+})
+firebase.database().ref('users/').once('value').then(snap=>{
+  let data = snap.val();
+  console.log(data);
+})
+firebase.database().ref('quests/').once('value').then(snap=>{
+  let data = snap.val();
+  console.log(data);
+})
+*/
+//var newPostKey = firebase.database().ref('Games/').child('posts').push().key;   // hämtar ny nyckel
