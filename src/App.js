@@ -13,17 +13,17 @@ import CountScore from './components/countscore/countscore.js';
 
 
 // Test array från firebase
-const questionArray = [{quest:'Vad står HTML för?',
-                        alternativ:[
-                        'Hyper Tacktic Marmelade Logic',
-                        'Herrod The Magic Lunytoon',
-                        'Hyper Text Markup Language'
-                        ]
-                      },
-                      {quest:'Är HTML ett programeringsspråk?',
-                      alternativ:['Ja', 'Nej'
-                      ]
-                      }];
+// const questionArray = [{quest:'Vad står HTML för?',
+//                         alternativ:[
+//                         'Hyper Tacktic Marmelade Logic',
+//                         'Herrod The Magic Lunytoon',
+//                         'Hyper Text Markup Language'
+//                         ]
+//                       },
+//                       {quest:'Är HTML ett programeringsspråk?',
+//                       alternativ:['Ja', 'Nej'
+//                       ]
+//                       }];
 
 var config = {
    apiKey: "AIzaSyAP1ELuVASv1aMYuXvbQk8N5B-fjIzNWP4",
@@ -44,8 +44,8 @@ class App extends Component {
     this.state = {
       currentPage: "Spel",
       selectedCategori : "",
-      allGames : "",
-      allQuests : ""
+      allGames : "g",
+      allQuests : "q"
     }
   }
 
@@ -55,14 +55,13 @@ class App extends Component {
   addQuestToFirebase = () => {
     let newPostKey = db.ref('quests/').child('posts').push().key;
     let quest = {
-      a : "15",
-      b : "50",
-      c : "100",
-      d : "1000",
+      a : "I en extern fil",
+      b : "head",
+      c : "body",
       category : "css",
       id : newPostKey,
-      question : "Vad har inline-style för specificitetsvärde i CSS?",
-      rightanswer : "d"
+      question : "Var placerar man style taggen i ett HTML document?",
+      rightanswer : "b"
     }
     db.ref(`quests/${newPostKey}`).set(quest);
   }
@@ -111,12 +110,13 @@ class App extends Component {
       <div className="App">
         <Profile/>
         <Login firebase={firebase} updateUser={this.getUserInfo}/>
-        <Questions questionArray={questionArray} />
+        <Questions games={this.state.allGames} quests={this.state.allQuests}/>
         <Categories selectedCategori={this.chooseCategori} />
         <QuestStart />
         <QuestBar />
         <Menu changePage={this.changePage} currentPage={this.state.currentPage}/>
         <CountScore />
+      
       </div>
     );
   }
