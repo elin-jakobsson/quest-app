@@ -1,5 +1,6 @@
 import React from 'react';
 import './statistic.css';
+import StatisticView from '../statistic-view/statistic-view.js'
 
 
 class Statistic extends React.Component{
@@ -8,10 +9,24 @@ class Statistic extends React.Component{
     this.state = {
       selectedStatistic : "hihgestScore",
       scoreOfPlayers : "",
-      isLoading: true
+      isLoading: true,
+      wantToUpdate : true
     }
   }
 
+  componentDidUpdate(){
+    if(this.props.firebaseReady){ // om firebase är redo
+      if(this.state.wantToUpdate){ // om vi vill updatera komponenten.
+        let scoreOfPlayers = this.getHihgestScore();
+        this.props.updateScoreOfPlayers(scoreOfPlayers); // skickar upp det
+        this.setState({wantToUpdate: false, scoreOfPlayers})
+      }
+    }
+
+    if(!this.props.firebaseReady && this.state.wantToUpdate === false){  // firebase har satts false.. nu vill vi uppdatera komponenten igen.
+      this.setState({wantToUpdate: true})
+    }
+  }
 
   handleClick = (item) => {
     console.log("hejsan", item);
@@ -31,29 +46,35 @@ class Statistic extends React.Component{
   }
 
 
-  calculateScores = (arrayGames) => {
+  calculateScores = (arrayGames, user) => {
     let newUserStat = {
       cssTotal : 0,
       cssHigh: 0,
       htmlTotal: 0,
       htmlHigh: 0,
       javascriptTotal: 0,
-      javascriptHigh: 0
+      javascriptHigh: 0,
+      totalScore : 0,
+      user: user
     }
-    let calc =  {
-      "css" : ( score ) => { newUserStat.cssTotal += score; if( score > newUserStat.cssHigh) newUserStat.cssHigh = score;},
-      "html" : ( score ) => { newUserStat.htmlTotal += score; if( score > newUserStat.htmlHigh) newUserStat.htmlHigh = score;},
-      "javascript" : ( score ) => { newUserStat.javascriptTotal += score; if( score > newUserStat.javascriptHigh) newUserStat.javascriptHigh = score;}
+
+    let calc = (category, score) =>{
+      newUserStat[category+"Total"] += score
+      if(newUserStat[category+"High"] < score ){
+        newUserStat[category+"High"] = score;
+      }
+      newUserStat.totalScore += score
     }
+
     arrayGames.forEach(item => {
-      calc[item.catagory](item.score);
+      calc(item.catagory,item.score);
     })
 
     return newUserStat;
   }
 
   getHihgestScore = () => {
-    // Går igenom alla användare och plockar ut alla spel den gjort. Pushar resultatet till en lista som vi sedan kan välja vad vi ska visa för användaren.
+    // Går igenom alla användare och plockar ut alla spel den gjort. Pushar resultatet till en lista som vi sedan skickar upp till app för att använda i profil och statestik
 
     let gamesObj = {...this.props.games};
     let gamesArray = [];
@@ -69,24 +90,39 @@ class Statistic extends React.Component{
     for(let user in users){
       user = users[user]
       let userGameList = gamesArray.filter( item => item.userid === user.uid) // filtererar alla games för användaren
-      let result = this.calculateScores(userGameList);
+      let result = this.calculateScores(userGameList, user);
       scoreOfPlayers.push(result);
     }
 
-    console.log(scoreOfPlayers);
+    return scoreOfPlayers;
 
-    let newList = scoreOfPlayers.map(item => <li>{item.cssTotal}</li>)
-
-    return newList;
-    //return (<ul>{newList}</ul>);
   }
+
+
 
   render(){
 
+    let menu = this.populateMenu();
 
+    let data;
+    if(this.state.selectedStatistic === "HihgestScore"){
+      data = "hihgscore"
+    }else {
+      data = "not hihgestScore"
+    }
+
+    let showStat = ""
+    if(this.state.scoreOfPlayers){
+      showStat = <StatisticView scoreOfPlayers={ this.state.scoreOfPlayers } />
+    } else {
+      showStat = "Statestic saknas"
+    }
     return(
       <div className="component container-statistic">
-        data :)
+        Här är statistica
+        { menu }
+        { data }
+        { showStat }
       </div>
 
     );

@@ -49,7 +49,8 @@ class App extends Component {
       allGames : "",
       allQuests : "",
       allUsers: "",
-      firebaseIsLoaded: false
+      firebaseIsLoaded: false,
+      scoreOfPlayers: [],
     }
   }
 
@@ -77,9 +78,13 @@ class App extends Component {
     }
   }
 
-  // showProfile () =>{
-  //
-  // }
+
+  updateScoreOfPlayers = (scoreOfPlayers) => {
+    console.log("funkar");
+    this.setState({ scoreOfPlayers })
+
+  }
+
   componentDidMount(){
     this.getUserInfo();
     // this.addQuestToFirebase();
@@ -153,7 +158,8 @@ class App extends Component {
         <QuestBar />
         <Menu changePage={this.changePage} currentPage={this.state.currentPage}/>
         <CountScore />
-        <Statistic games ={ this.state.allGames } users= { this.state.allUsers }/>
+        <Statistic games ={ this.state.allGames } users= { this.state.allUsers } firebaseReady = { this.state.firebaseIsLoaded }  updateScoreOfPlayers = { this.updateScoreOfPlayers }/>
+
       </div>
     );
   }
