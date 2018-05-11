@@ -12,6 +12,7 @@ class Statistic extends React.Component{
     }
   }
 
+
   handleClick = (item) => {
     console.log("hejsan", item);
     this.getHihgestScore();
@@ -81,24 +82,11 @@ class Statistic extends React.Component{
   }
 
   render(){
-    if(this.state.isLoading){
-      // this.getHihgestScore();
-      console.log("nu körs den");
-      this.setState({isLoading: false});
-    }
-    let menu = this.populateMenu();
-    let data;
-    if(this.state.selectedStatistic === "HihgestScore"){
 
-    }else {
-      data = "not hihgestScore"
-    }
 
     return(
       <div className="component container-statistic">
-        { menu }
-        { data }
-
+        data :)
       </div>
 
     );
