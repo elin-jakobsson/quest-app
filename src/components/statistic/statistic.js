@@ -14,8 +14,10 @@ class Statistic extends React.Component{
     }
   }
 
-  componentDidUpdate(){
+  componentDidMount(){
+      console.log("funkar");
     if(this.props.firebaseReady){ // om firebase är redo
+
       if(this.state.wantToUpdate){ // om vi vill updatera komponenten.
         let scoreOfPlayers = this.getHihgestScore();
         this.setState({wantToUpdate: false, scoreOfPlayers})

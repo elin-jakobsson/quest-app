@@ -137,7 +137,8 @@ class App extends Component {
         <QuestBar />
         <Menu changePage={this.changePage} currentPage={this.state.currentPage}/>
         <CountScore />
-        <Statistic games ={ this.state.allGames } users= { this.state.allUsers } firebaseReady = { this.state.firebaseIsLoaded }  />
+
+        {this.state.currentPage==="HighScore" ? <Statistic games ={ this.state.allGames } users= { this.state.allUsers } firebaseReady = { this.state.firebaseIsLoaded }  /> : ""}
 
       </div>
     );
