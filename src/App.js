@@ -36,7 +36,7 @@ class App extends Component {
       allQuests : "",
       allUsers: "",
       firebaseIsLoaded: false,
-      scoreOfPlayers: [],
+
     }
   }
 
@@ -137,7 +137,7 @@ class App extends Component {
         <QuestBar />
         <Menu changePage={this.changePage} currentPage={this.state.currentPage}/>
         <CountScore />
-        <Statistic games ={ this.state.allGames } users= { this.state.allUsers } firebaseReady = { this.state.firebaseIsLoaded }  updateScoreOfPlayers = { this.updateScoreOfPlayers }/>
+        <Statistic games ={ this.state.allGames } users= { this.state.allUsers } firebaseReady = { this.state.firebaseIsLoaded }  />
 
       </div>
     );

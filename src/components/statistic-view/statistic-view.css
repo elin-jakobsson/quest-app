@@ -1,0 +1,9 @@
+.container-statisticView {
+  display: flex;
+  justify-content: center;
+}
+
+.container-statisticView li{
+  display: flex;
+  min-height: 50px;
+}
