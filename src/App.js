@@ -129,11 +129,13 @@ class App extends Component {
       user = this.state.currentUser;
     }
 
+
+
     return (
       <div className="App">
         <Profile userinfo = {user} alterProfile = {this.state.currentPage}/>
         <Login firebase={firebase} updateUser={this.getUserInfo}/>
-        <Questions allGames={this.state.allGames} allQuests={this.state.allQuests}/>
+        <Questions firebaseIsLoaded={this.state.firebaseIsLoaded} allGames={this.state.allGames} allQuests={this.state.allQuests}/>
         <Categories selectedCategori={this.chooseCategori} />
         <QuestStart />
         <QuestBar />

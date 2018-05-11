@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './questions.css';
 import SingleQuest from './singlequest';
+import Timer from '../timer/timer'
+
 
 // vad jag ska göra
 /*
@@ -33,6 +35,13 @@ import SingleQuest from './singlequest';
 
 
   loopa igenom obejct ta bort question, id, rightanswer osv.
+
+
+
+
+ <Timer startValue={10} timeBool={false} timesUp={this.timesUp} />
+
+  lägg till current user
 */
 
 
@@ -41,27 +50,77 @@ class Questions extends Component {
     super(props);
     this.state = {
       activeGame:false,
-      qurrentQuestion: 0
+      qurrentQuestion: 0,
+      changequest : false
     }
   }
 
 // den orginella spelistan, existerande gamelista, categori, användar ID
-isGameActive = (questList, gameList, item, user)=>{
-
-  for(let obj in gameList){
-    if (gameList[obj].category === item) {
-      if (gameList[obj].userid === user) {
-          if (gameList[obj].completed === false) {
-            return gameList[obj];
-          }else {
-            this.fetchCategori(questList,item)
-          }
-      }else {
-        this.fetchCategori(questList,item)
-      }
+/*
+  let gamesArray = []
+  for(let game in gameList){
+    if(game.userid === user.userid){
+    gamesArray.push(gameList[game])
     }
   }
-}
+
+  let currentGame = gamesArray.filter( game => {
+    game.category === item && game.completed === false
+  })
+
+ */
+isGameActive = (questList, gameList, item, user)=>{
+  console.log(questList);
+  console.log(gameList);
+  console.log(item);
+  console.log(user);
+
+  let gamesArray = [];
+  for(let game in gameList){
+    if(gameList[game].userid === user){
+    gamesArray.push(gameList[game]);
+    // console.log('in game ', gameList[game]);
+    }
+  }
+  console.log(gamesArray);
+
+  // item css
+  let userGameList = gamesArray.filter( game => game.category === item )
+
+  let currentGame = gamesArray.filter( game => function(){
+    console.log(game);
+    if (game.category === item && game.completed === false){
+      return game;
+    }
+
+  });
+
+  console.log(userGameList);
+
+
+  // let gamesArray = [];
+  // for(let obj in gameList){
+  //   if (gameList[obj].category === item) {
+  //     console.log('kategori ',gameList[obj].category);
+  //     if (gameList[obj].userid === user) {
+  //       console.log('user ', gameList[obj].userid);
+  //         if (gameList[obj].completed === true) { // change to false later
+  //           gamesArray.push(gameList[obj]);
+  //           console.log('inside game ', gameList[obj]);
+  //         }
+  //       }
+  //     }
+  //   }
+  //   if (gamesArray.length > 0) {
+  //
+  //     return gamesArray;
+  //   }else {
+  //     let newgame = this.fetchCategori(questList,item);
+  //     console.log(gamesArray);
+  //     console.log(newgame);
+  //     return newgame;
+  //   }
+} // isGameActive
 
 liftActiveGame = (object)=>{
   // vad behöver de andra komponenterna veta
@@ -76,7 +135,7 @@ fetchCategori = (questList,item)=>{
   let array = [];
 
   for(let obj in questList){
-    console.log(questList[obj]);
+  //  console.log(questList[obj]);
     if (questList[obj].category === item) {
       array.push(questList[obj]);
     }
@@ -103,16 +162,44 @@ shuffleArray=(array)=>{
   return array;
 } // Shuffle()
 
+
+timesUp = (timerFinished) => {
+   if (timerFinished) {
+       this.setState({changequest : true}, () => {
+         console.log("Changequest status : " + this.state.changequest);
+       })
+   }
+}
+
   render() {
 
-  let questionArray = this.fetchCategori(this.props.allQuests,'css');
-    console.log(questionArray);
+    let displayElement;
 
-    return (
-      <div>
-        <SingleQuest activeGame={this.state.activeGame} updateQuestion={this.updateQuestion} questionArray={questionArray} qurrentQuestion={this.state.qurrentQuestion}/>
-      </div>
-    );
+    if (this.props.firebaseIsLoaded) {
+      let allQuests = {...this.props.allQuests};
+      let allGames = {...this.props.allGames};
+      let item = 'css';
+      let userId = 'elinkey';
+
+      console.log('allQuests ',allQuests);
+      console.log('allGames ', allGames);
+      let questionArray = this.isGameActive(allQuests,allGames,item, userId);
+
+      displayElement = (
+        <div>
+          <Timer startValue={10} timeBool={false} timesUp={this.timesUp} />
+
+          <SingleQuest activeGame={this.state.activeGame} updateQuestion={this.updateQuestion} questionArray={questionArray} qurrentQuestion={this.state.qurrentQuestion}/>
+
+        </div>
+      );
+    }else {
+      displayElement = (<p>No question data</p>);
+    }
+
+    return (<div>
+              {displayElement}
+            </div>);
   }
 }
 
