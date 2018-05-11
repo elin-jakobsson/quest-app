@@ -5,16 +5,15 @@ import './statistic-view.css';
 class StatisticView extends React.Component{
 
   sortView = (scoreOfPlayers) => {
-    console.log(scoreOfPlayers);
     scoreOfPlayers.sort((a,b)=>{
-      return a.totalScore - b.totalScore;
+      return b.totalScore - a.totalScore;
     })
 
     let showInfo = scoreOfPlayers.map( (item,index) =>{
       return (
         <li key={item.user.uid}>
-          <div> Place: {index+1} </div>
-          <div> Name:{item.user.name} TotalScore:{item.totalScore} </div>
+          <div> {index+1} </div>
+          <div> {item.user.name}</div> <div> Score:{item.totalScore} </div>
         </li>
       )
     })
