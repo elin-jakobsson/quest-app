@@ -1,0 +1,85 @@
+.container-login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 10px;
+  background-color: rgb(24,17,53);
+}
+
+.container-login .loginSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 680px;
+  padding: 10px;
+  background-color: #223F55;
+  border-radius: 4px;
+}
+ .loginSection h2{
+   color:#16CAB0;
+   margin-top: 20px;
+   margin-bottom: 10px;
+ }
+ .loginSection .greyBorder{
+  border-bottom: 1.5px solid grey;
+  width: 90%;
+  max-width: 450px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.loginSection button {
+  width: 80%;
+  max-width: 200px;
+  height: 35px;
+  border-radius: 4px;
+  margin: 10px;
+  border-style: none;
+  font-weight: bold;
+  font-size: 1.15rem;
+  display: flex;
+  flex-direction: row;
+  cursor: pointer;
+}
+
+.loginSection button:hover{
+  filter: brightness(120%);
+}
+
+button .logoContainer {
+  width: 30px;
+  height: 30px;
+  padding: 3px;
+  flex: 1;
+}
+
+.logoContainer img {
+  height: 100%;
+}
+
+.btnTextContainer {
+  display: flex;
+  align-self: center;
+  flex: 2;
+  height: 100%;
+}
+
+.btnTextContainer span {
+}
+
+button:nth-child(3) {
+  background-color: white;
+}
+
+button:nth-child(4) {
+  background-color: rgb(35, 35, 35);
+  color: white;
+}
+
+button:nth-child(5) {
+  background-color: rgb(59, 89, 152);
+  color: white;
+  margin-bottom: 20px;
+}

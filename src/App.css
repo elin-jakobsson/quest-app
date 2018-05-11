@@ -6,3 +6,9 @@ padding: 0;
  -moz-box-sizing: border-box;
  box-sizing: border-box;
 }
+
+/* .temoraryButton{
+  position: absolute;
+  z-index: 1;
+  margin-bottom: 5rem;
+} */
