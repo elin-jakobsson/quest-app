@@ -48,7 +48,8 @@ class App extends Component {
       selectedCategori : "",
       allGames : "",
       allQuests : "",
-      allUsers: ""
+      allUsers: "",
+      firebaseIsLoaded: false
     }
   }
 
@@ -96,20 +97,37 @@ class App extends Component {
   }
 
 
-  getDataFromFirebase = () => {
-    db.ref('games/').once('value').then(snap=>{
-      let data = snap.val();
-      this.setState({ allGames : data })
-    })
-    db.ref('quests/').once('value').then(snap=>{
-      let data = snap.val();
-      this.setState({ allQuests : data })
-    })
-    db.ref('users/').once('value').then(snap=>{
-      let data = snap.val();
-      this.setState({ allUsers : data })
+  getDataFromFirebase = () => {  // med ett promise som ändrar status på firebaseIsLoaded när all data är hämtad från firebase
+
+    let promiseOne = new Promise((resolve, reject)=>{
+      db.ref('games/').once('value').then(snap=>{
+        let data = snap.val();
+        this.setState({ allGames : data })
+        resolve();
+      })
     })
 
+    let promiseTwo = new Promise((resolve, reject)=>{
+      db.ref('quests/').once('value').then(snap=>{
+        let data = snap.val();
+        this.setState({ allQuests : data })
+        resolve();
+      })
+    })
+
+    let promiseThree = new Promise((resolve, reject)=>{
+      db.ref('users/').once('value').then(snap=>{
+        let data = snap.val();
+        this.setState({ allUsers : data })
+        resolve();
+      })
+    })
+
+
+    Promise.all([promiseOne,promiseTwo,promiseThree]).then( values =>{
+      this.setState({firebaseIsLoaded: true})
+      console.log("firebase is loaded!! :)");
+    })
   }
 
   changePage = (item) => {
