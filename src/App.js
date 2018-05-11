@@ -11,20 +11,6 @@ import Menu from './components/menu/menu.js';
 import CountScore from './components/countscore/countscore.js';
 
 
-
-// Test array från firebase
-// const questionArray = [{quest:'Vad står HTML för?',
-//                         alternativ:[
-//                         'Hyper Tacktic Marmelade Logic',
-//                         'Herrod The Magic Lunytoon',
-//                         'Hyper Text Markup Language'
-//                         ]
-//                       },
-//                       {quest:'Är HTML ett programeringsspråk?',
-//                       alternativ:['Ja', 'Nej'
-//                       ]
-//                       }];
-
 var config = {
    apiKey: "AIzaSyAP1ELuVASv1aMYuXvbQk8N5B-fjIzNWP4",
    authDomain: "quest-app-lab32.firebaseapp.com",
