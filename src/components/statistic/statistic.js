@@ -18,20 +18,15 @@ class Statistic extends React.Component{
     if(this.props.firebaseReady){ // om firebase är redo
       if(this.state.wantToUpdate){ // om vi vill updatera komponenten.
         let scoreOfPlayers = this.getHihgestScore();
-        this.props.updateScoreOfPlayers(scoreOfPlayers); // skickar upp det
+        console.log("scoreofplayer: ",scoreOfPlayers);
         this.setState({wantToUpdate: false, scoreOfPlayers})
       }
-    }
-
-    if(!this.props.firebaseReady && this.state.wantToUpdate === false){  // firebase har satts false.. nu vill vi uppdatera komponenten igen.
-      this.setState({wantToUpdate: true})
     }
   }
 
   handleClick = (item) => {
-    console.log("hejsan", item);
-    this.getHihgestScore();
-    this.setState({selectedStatistic : item })
+    this.getHihgestScore(); // uppdaterar statestik
+    this.setState({selectedStatistic : item }) // ändrar vilken typ av statestik som ska visas.
 
   }
 
@@ -44,7 +39,6 @@ class Statistic extends React.Component{
     })
     return (<ul> { newLiList } </ul>)
   }
-
 
   calculateScores = (arrayGames, user) => {
     let newUserStat = {
@@ -74,8 +68,8 @@ class Statistic extends React.Component{
   }
 
   getHihgestScore = () => {
-    // Går igenom alla användare och plockar ut alla spel den gjort. Pushar resultatet till en lista som vi sedan skickar upp till app för att använda i profil och statestik
-
+    // Går igenom alla användare och plockar ut alla spel den gjort.
+    // Pushar resultatet till en lista som vi sedan skickar upp till app för att använda i profil och statestik
     let gamesObj = {...this.props.games};
     let gamesArray = [];
 
@@ -95,36 +89,16 @@ class Statistic extends React.Component{
     }
 
     return scoreOfPlayers;
-
   }
 
-
-
   render(){
-
     let menu = this.populateMenu();
 
-    let data;
-    if(this.state.selectedStatistic === "HihgestScore"){
-      data = "hihgscore"
-    }else {
-      data = "not hihgestScore"
-    }
-
-    let showStat = ""
-    if(this.state.scoreOfPlayers){
-      showStat = <StatisticView scoreOfPlayers={ this.state.scoreOfPlayers } />
-    } else {
-      showStat = "Statestic saknas"
-    }
     return(
       <div className="component container-statistic">
-        Här är statistica
         { menu }
-        { data }
-        { showStat }
+        {(this.state.scoreOfPlayers) ?  (<StatisticView scoreOfPlayers={ this.state.scoreOfPlayers } typeOfSort = { this.state.selectedStatistic } />) : "Loading!!"  }
       </div>
-
     );
   }
 }

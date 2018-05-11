@@ -64,13 +64,6 @@ class App extends Component {
     }
   }
 
-
-  updateScoreOfPlayers = (scoreOfPlayers) => {
-    console.log("funkar");
-    this.setState({ scoreOfPlayers })
-
-  }
-
   componentDidMount(){
     this.getUserInfo();
     // this.addQuestToFirebase();
