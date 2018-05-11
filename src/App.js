@@ -9,6 +9,7 @@ import QuestStart from './components/queststart/queststart.js';
 import QuestBar from './components/questbar/questbar.js';
 import Menu from './components/menu/menu.js';
 import CountScore from './components/countscore/countscore.js';
+import Statistic from './components/statistic/statistic.js';
 
 
 var config = {
@@ -32,7 +33,9 @@ class App extends Component {
       currentUser : "",
       selectedCategori : "",
       allGames : "",
-      allQuests : ""
+      allQuests : "",
+      allUsers: "",
+      firebaseIsLoaded: false
     }
   }
 
@@ -80,14 +83,36 @@ class App extends Component {
   }
 
 
-  getDataFromFirebase = () => {
+  getDataFromFirebase = () => {  // med ett promise som ändrar status på firebaseIsLoaded när all data är hämtad från firebase
+
+    let promiseOne = new Promise((resolve, reject)=>{
       db.ref('games/').once('value').then(snap=>{
-      let data = snap.val();
-      this.setState({ allGames : data })
+        let data = snap.val();
+        this.setState({ allGames : data })
+        resolve();
+      })
     })
+
+    let promiseTwo = new Promise((resolve, reject)=>{
       db.ref('quests/').once('value').then(snap=>{
-      let data = snap.val();
-      this.setState({ allQuests : data })
+        let data = snap.val();
+        this.setState({ allQuests : data })
+        resolve();
+      })
+    })
+
+    let promiseThree = new Promise((resolve, reject)=>{
+      db.ref('users/').once('value').then(snap=>{
+        let data = snap.val();
+        this.setState({ allUsers : data })
+        resolve();
+      })
+    })
+
+
+    Promise.all([promiseOne,promiseTwo,promiseThree]).then( values =>{
+      this.setState({firebaseIsLoaded: true})
+      console.log("firebase is loaded!! :)");
     })
   }
 
@@ -114,7 +139,7 @@ class App extends Component {
         <QuestBar />
         <Menu changePage={this.changePage} currentPage={this.state.currentPage}/>
         <CountScore />
-
+        <Statistic games ={ this.state.allGames } users= { this.state.allUsers }/>
       </div>
     );
   }
