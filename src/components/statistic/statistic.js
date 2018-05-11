@@ -6,13 +6,17 @@ class Statistic extends React.Component{
   constructor(props){
     super(props);
     this.state = {
-      selectedStatistic : "hihgestScore"
+      selectedStatistic : "hihgestScore",
+      scoreOfPlayers : "",
+      isLoading: true
     }
   }
 
   handleClick = (item) => {
     console.log("hejsan", item);
+    this.getHihgestScore();
     this.setState({selectedStatistic : item })
+
   }
 
   populateMenu = () => {
@@ -25,24 +29,67 @@ class Statistic extends React.Component{
     return (<ul> { newLiList } </ul>)
   }
 
-  getHihgestScore = () => {
-    console.log("the list is called");
-    let list = this.props.games;
-    let newList = [];
-    for(let item in list){
-      console.log(item);
-      newList.push(
-        (<li>{ item }</li>)
-      )
+
+  calculateScores = (arrayGames) => {
+    let newUserStat = {
+      cssTotal : 0,
+      cssHigh: 0,
+      htmlTotal: 0,
+      htmlHigh: 0,
+      javascriptTotal: 0,
+      javascriptHigh: 0
     }
-    return (<ul>{newList}</ul>);
+    let calc =  {
+      "css" : ( score ) => { newUserStat.cssTotal += score; if( score > newUserStat.cssHigh) newUserStat.cssHigh = score;},
+      "html" : ( score ) => { newUserStat.htmlTotal += score; if( score > newUserStat.htmlHigh) newUserStat.htmlHigh = score;},
+      "javascript" : ( score ) => { newUserStat.javascriptTotal += score; if( score > newUserStat.javascriptHigh) newUserStat.javascriptHigh = score;}
+    }
+    arrayGames.forEach(item => {
+      calc[item.catagory](item.score);
+    })
+
+    return newUserStat;
+  }
+
+  getHihgestScore = () => {
+    // Går igenom alla användare och plockar ut alla spel den gjort. Pushar resultatet till en lista som vi sedan kan välja vad vi ska visa för användaren.
+
+    let gamesObj = {...this.props.games};
+    let gamesArray = [];
+
+    for(let item in gamesObj){  // gör om objetet till en lista
+      let newObj = gamesObj[item]
+      gamesArray.push(newObj)
+    }
+
+    let users = {...this.props.users}
+
+    let scoreOfPlayers = []; // lista med alla spelares resultat
+    for(let user in users){
+      user = users[user]
+      let userGameList = gamesArray.filter( item => item.userid === user.uid) // filtererar alla games för användaren
+      let result = this.calculateScores(userGameList);
+      scoreOfPlayers.push(result);
+    }
+
+    console.log(scoreOfPlayers);
+
+    let newList = scoreOfPlayers.map(item => <li>{item.cssTotal}</li>)
+
+    return newList;
+    //return (<ul>{newList}</ul>);
   }
 
   render(){
+    if(this.state.isLoading){
+      // this.getHihgestScore();
+      console.log("nu körs den");
+      this.setState({isLoading: false});
+    }
     let menu = this.populateMenu();
     let data;
     if(this.state.selectedStatistic === "HihgestScore"){
-      data = this.getHihgestScore()
+
     }else {
       data = "not hihgestScore"
     }
