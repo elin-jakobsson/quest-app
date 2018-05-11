@@ -9,6 +9,7 @@ import QuestStart from './components/queststart/queststart.js';
 import QuestBar from './components/questbar/questbar.js';
 import Menu from './components/menu/menu.js';
 import CountScore from './components/countscore/countscore.js';
+import Statistic from './components/statistic/statistic.js';
 
 
 
@@ -46,7 +47,8 @@ class App extends Component {
       currentUser : "",
       selectedCategori : "",
       allGames : "",
-      allQuests : ""
+      allQuests : "",
+      allUsers: ""
     }
   }
 
@@ -95,14 +97,19 @@ class App extends Component {
 
 
   getDataFromFirebase = () => {
-      db.ref('games/').once('value').then(snap=>{
+    db.ref('games/').once('value').then(snap=>{
       let data = snap.val();
       this.setState({ allGames : data })
     })
-      db.ref('quests/').once('value').then(snap=>{
+    db.ref('quests/').once('value').then(snap=>{
       let data = snap.val();
       this.setState({ allQuests : data })
     })
+    db.ref('users/').once('value').then(snap=>{
+      let data = snap.val();
+      this.setState({ allUsers : data })
+    })
+
   }
 
   changePage = (item) => {
@@ -128,6 +135,7 @@ class App extends Component {
         <QuestBar />
         <Menu changePage={this.changePage} currentPage={this.state.currentPage}/>
         <CountScore />
+        <Statistic games ={ this.state.allGames } users= { this.state.allUsers }/>
       </div>
     );
   }

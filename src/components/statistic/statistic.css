@@ -1,0 +1,15 @@
+.container-statistic ul {
+  display: flex;
+  justify-content: center;
+  list-style-type: none;
+}
+.container-statistic li {
+  flex: 1;
+  text-align: center;
+  background-color: #2F648B;
+}
+
+.container-statistic li:hover {
+  cursor: pointer;
+  filter: brightness(120%);
+}

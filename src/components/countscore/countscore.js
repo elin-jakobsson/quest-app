@@ -21,7 +21,7 @@ const CountScore = props => {
     for(let item of array){
       if( item === 1 || item === 2 ){
         bonusCount++
-      }else{
+      }else {
         bonusCount = 0
       }
       current = calculate(current, bonusCount)
