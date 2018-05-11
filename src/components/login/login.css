@@ -20,6 +20,7 @@
  .loginSection h2{
    color:#16CAB0;
    margin-top: 20px;
+   margin-bottom: 10px;
  }
  .loginSection .greyBorder{
   border-bottom: 1.5px solid grey;
@@ -80,4 +81,5 @@ button:nth-child(4) {
 button:nth-child(5) {
   background-color: rgb(59, 89, 152);
   color: white;
+  margin-bottom: 20px;
 }
