@@ -22,6 +22,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex: 1;
 
 }
 
@@ -30,8 +31,8 @@
   text-align: center;
 }
 .container-statisticView li div:nth-child(2){
-  flex: 3;
+  flex: 2;
 }
 .container-statisticView li div:nth-child(3){
-  flex: 1;
+  flex: 2;
 }
