@@ -30,6 +30,9 @@ import SingleQuest from './singlequest';
 
   och de som vill kollla högsta poängen på allaför high scores, kan göra det
   kan man inte kolla i användrens information om vem som har högsta poäng.
+
+
+  loopa igenom obejct ta bort question, id, rightanswer osv.
 */
 
 
@@ -42,11 +45,19 @@ class Questions extends Component {
     }
   }
 
-isGameActive = (objectList, item, user)=>{
-  for(let obj in objectList){
-    if (objectList[obj].category === item) {
-      if (objectList[obj].userid === user) {
+// den orginella spelistan, existerande gamelista, categori, användar ID
+isGameActive = (questList, gameList, item, user)=>{
 
+  for(let obj in gameList){
+    if (gameList[obj].category === item) {
+      if (gameList[obj].userid === user) {
+          if (gameList[obj].completed === false) {
+            return gameList[obj];
+          }else {
+            this.fetchCategori(questList,item)
+          }
+      }else {
+        this.fetchCategori(questList,item)
       }
     }
   }
@@ -61,13 +72,13 @@ updateQuestion = ()=>{
   this.setState({qurrentQuestion: this.state.qurrentQuestion +1});
 }
 
-fetchCategori = (objectList,item)=>{
+fetchCategori = (questList,item)=>{
   let array = [];
 
-  for(let obj in objectList){
-    console.log(objectList[obj]);
-    if (objectList[obj].category === item) {
-      array.push(objectList[obj]);
+  for(let obj in questList){
+    console.log(questList[obj]);
+    if (questList[obj].category === item) {
+      array.push(questList[obj]);
     }
   }
 
@@ -99,7 +110,7 @@ shuffleArray=(array)=>{
 
     return (
       <div>
-        <SingleQuest updateQuestion={this.updateQuestion} questionArray={questionArray} qurrentQuestion={this.state.qurrentQuestion}/>
+        <SingleQuest activeGame={this.state.activeGame} updateQuestion={this.updateQuestion} questionArray={questionArray} qurrentQuestion={this.state.qurrentQuestion}/>
       </div>
     );
   }
