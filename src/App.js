@@ -133,7 +133,7 @@ class App extends Component {
       <div className="App">
         <Profile userinfo = {user} alterProfile = {this.state.currentPage}/>
         <Login firebase={firebase} updateUser={this.getUserInfo}/>
-        <Questions firebaseIsLoaded={this.state.firebaseIsLoaded} allGames={this.state.allGames} allQuests={this.state.allQuests}/>
+        {this.state.currentPage==="HighScore" ? <Questions db={db} firebaseIsLoaded={this.state.firebaseIsLoaded} allGames={this.state.allGames} allQuests={this.state.allQuests}/> : ""}
         <Categories selectedCategori={this.chooseCategori} />
         <QuestStart />
         <QuestBar />
