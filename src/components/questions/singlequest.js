@@ -6,7 +6,7 @@ class SingleQuest extends Component {
   constructor(props){
     super(props);
     this.state={
-      questionsLeft: ''
+
     }
   } // constructor()
 
@@ -58,35 +58,37 @@ class SingleQuest extends Component {
   }
 
   getQuest = () => {
+
     let currentQuests = this.props.currentGame.questList;
     let allQuests = this.props.allQuests
     //console.log(currentQuests);
     let notAnsweredQuests = currentQuests.filter(quest => quest.answer === "x")
 
     let questionsLeft = notAnsweredQuests.length;
-    this.setState({questionsLeft});
+    //this.setState({questionsLeft});
+
     let questKey = notAnsweredQuests[0].questKey;
 
 
     let singleQuest = allQuests[questKey];
     //console.log('single ',singleQuest);
-    return singleQuest;
+    return  {singleQuest,questionsLeft}
     //returner lista med val
   }
 
   render(){
-    let singleQuest = this.getQuest();
-    let chooices = this.getchooices(singleQuest)
+    let obj = this.getQuest();
+    let chooices = this.getchooices(obj.singleQuest)
 
     let nextButton;
-    if (this.state.questionsLeft > 1) {
+    if (obj.questionsLeft > 1) {
       nextButton = (<button onClick={ this.props.changeQuest }>Nästa </button>)
     } else {
       nextButton= (<button onClick={ this.props.changeQuest }>Fortsätt </button>)
     }
 
     return (<div>
-              <h4>{singleQuest.question}</h4>
+              <h4>{obj.singleQuest.question}</h4>
               <div>
                 <ul>
                 { chooices }
