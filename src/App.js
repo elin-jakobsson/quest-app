@@ -35,7 +35,8 @@ class App extends Component {
       allGames : "",
       allQuests : "",
       allUsers: "",
-      firebaseIsLoaded: false
+      firebaseIsLoaded: false,
+
     }
   }
 
@@ -63,9 +64,6 @@ class App extends Component {
     }
   }
 
-  // showProfile () =>{
-  //
-  // }
   componentDidMount(){
     this.getUserInfo();
     // this.addQuestToFirebase();
@@ -141,7 +139,9 @@ class App extends Component {
         <QuestBar />
         <Menu changePage={this.changePage} currentPage={this.state.currentPage}/>
         <CountScore />
-        <Statistic games ={ this.state.allGames } users= { this.state.allUsers }/>
+
+        {this.state.currentPage==="HighScore" ? <Statistic games ={ this.state.allGames } users= { this.state.allUsers } firebaseReady = { this.state.firebaseIsLoaded }  /> : ""}
+
       </div>
     );
   }
