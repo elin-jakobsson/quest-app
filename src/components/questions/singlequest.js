@@ -6,7 +6,7 @@ class SingleQuest extends Component {
   constructor(props){
     super(props);
     this.state={
-
+      questionsLeft: ''
     }
   } // constructor()
 
@@ -62,7 +62,9 @@ class SingleQuest extends Component {
     let allQuests = this.props.allQuests
     //console.log(currentQuests);
     let notAnsweredQuests = currentQuests.filter(quest => quest.answer === "x")
-    //console.log('after filter ',notAnsweredQuests);
+
+    let questionsLeft = notAnsweredQuests.length;
+    this.setState({questionsLeft});
     let questKey = notAnsweredQuests[0].questKey;
 
 
@@ -76,17 +78,21 @@ class SingleQuest extends Component {
     let singleQuest = this.getQuest();
     let chooices = this.getchooices(singleQuest)
 
+    let nextButton;
+    if (this.state.questionsLeft > 1) {
+      nextButton = (<button onClick={ this.props.changeQuest }>Nästa </button>)
+    } else {
+      nextButton= (<button onClick={ this.props.changeQuest }>Fortsätt </button>)
+    }
+
     return (<div>
               <h4>{singleQuest.question}</h4>
-
-
               <div>
                 <ul>
                 { chooices }
                 </ul>
               </div>
-
-
+              { nextButton }
           </div>);
 
   }// Render()

@@ -12,8 +12,10 @@ class Questions extends Component {
     this.state = {
       currentGame: '',
       allQuest: '',
-      qurrentQuestion: 0,
-      timeIsOut : false
+      timeIsOut : false,
+      liveUpdateCurrentGame: "",
+      resultMessage: ''
+
     }
   }
 
@@ -111,9 +113,27 @@ updateQuestion = (rightAnswer)=>{
     if(questNo > 9){ break; }
   }
 
+  let rightMessages = ['Grattis, det var RÄTT', 'Supper bra', 'Hackerman :)', 'Awesome Gitman', '!false :)', 'Master of everything', 'The queen/king of code', 'TRUE', 'Great!!', 'You are awesome']
+  let wrongMessages = ['Tyvärr fel','Du behöver plugga :)', "Inte en chans", "Sover du?","Kom igen nu bättre kan du!","Fel","Noo","Wrong","Bigg fail","Vad ska David (lärare) säga nu?","Nope","!true :(","Bigg noo","Whaaat!!?","FALSE","nääää!!","Bra försök"]
+
+  let posRight = Math.floor(Math.random() * rightMessages.length);
+  let posWrong = Math.floor(Math.random() * wrongMessages.length);
+
   let evaluateAnswer;
-  ((rightAnswer=== true) ? evaluateAnswer = 1 : evaluateAnswer = 0);
+  let msg;
+  if (rightAnswer) {
+    evaluateAnswer = 1
+    msg = rightMessages[posRight];
+  }else {
+    evaluateAnswer = 0
+    msg = wrongMessages[posWrong];
+  }
+
   console.log(evaluateAnswer);
+
+
+  this.setState({resultMessage: msg,
+                  timeIsOut: true });
 
   this.props.db.ref(`games/${gameid}/questList/${questNo}/answer`).set(evaluateAnswer); //uppdaterar databasen
 
@@ -179,18 +199,26 @@ componentWillUnmount(){
   this.props.db.ref('games/').off('value',this.liveUpdateGame);
 }
 
-handleClickDatabase = () => {
+changeQuest = () => {
   console.log("funkar! nu kan användaren välja att byta till nästa fråga :)");
-
+  // uppdatear state current game med ny live data
+  // starta även timern
+  let gameObj = this.state.liveUpdateCurrentGame;
+  this.setState({
+    currentGame: gameObj,
+    timeIsOut : false
+  })
 
 }
 
   render() {
 
+
+
     return (<div>
-                <Timer startValue={10} timeBool={false} timesUp={this.timesUp} />
-                { this.state.currentGame !=="" ? <SingleQuest db={this.props.db} timeIsOut={this.state.timeIsOut} updateQuestion={this.updateQuestion} allQuests={ this.props.allQuests } currentGame={this.state.currentGame} qurrentQuestion={this.state.qurrentQuestion}/> : "" }
-                <button onClick={this.handleClickDatabase}>Nästa fråga!!</button>
+                { !this.state.timeIsOut ? <Timer startValue={10} timeBool={false} timesUp={this.timesUp} /> : <p>{this.state.resultMessage}</p>}
+                { this.state.currentGame !=="" ? <SingleQuest db={this.props.db} changeQuest={this.changeQuest} timeIsOut={this.state.timeIsOut} updateQuestion={this.updateQuestion} allQuests={ this.props.allQuests } currentGame={this.state.currentGame} /> : "" }
+
             </div>);
   }
 }
