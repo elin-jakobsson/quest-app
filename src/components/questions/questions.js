@@ -13,7 +13,7 @@ class Questions extends Component {
       currentGame: '',
       allQuest: '',
       qurrentQuestion: 0,
-      changequest : false
+      timeIsOut : false
     }
   }
 
@@ -100,7 +100,22 @@ isGameActive = (questList, gameList, item, user)=>{
   }
 } // isGameActive
 
-updateQuestion = (update)=>{
+updateQuestion = (rightAnswer)=>{
+  console.log("Funkar!!");
+  let game = this.state.currentGame;
+  let gameid = game.gameid;
+  let questList = game.questList;
+  let questNo = 0;
+  while(questList[questNo].answer !== "x"){  //letar rätt på första frågan som inte besvarats
+    questNo++
+    if(questNo > 9){ break; }
+  }
+
+  let evaluateAnswer;
+  ((rightAnswer=== true) ? evaluateAnswer = 1 : evaluateAnswer = 0);
+  console.log(evaluateAnswer);
+
+  this.props.db.ref(`games/${gameid}/questList/${questNo}/answer`).set(evaluateAnswer); //uppdaterar databasen
 
 }
 
@@ -135,8 +150,8 @@ shuffleArray=(array)=>{
 
 timesUp = (timerFinished) => {
    if (timerFinished) {
-       this.setState({changequest : true}, () => {
-         console.log("Changequest status : " + this.state.changequest);
+       this.setState({timeIsOut : true}, () => {
+         console.log("Changequest status : " + this.state.timeIsOut);
        })
    }
 }
@@ -147,8 +162,25 @@ componentDidMount(){
 
   let item = 'css';
   let userId = 'elinkey';
-  let gameObj = this.isGameActive(allQuests,allGames,item, userId);
+  let gameObj = this.isGameActive(allQuests,allGames,item, userId); // ett spel retuneras och väljs ut. Om det inte finns ett pågående skapas ett nytt inuti funktionen.
+
   this.setState({currentGame: gameObj})
+  this.props.db.ref(`games/${gameObj.gameid}`).on('value',this.liveUpdateGame); //startar en lyssnare i databasen på games.. som vi kan använda
+}
+
+liveUpdateGame = (snap) =>{
+  let data = snap.val();
+  this.setState({ liveUpdateCurrentGame : data })
+  console.log("uppdatering från databseen: ", data);
+}
+
+componentWillUnmount(){
+  this.props.db.ref('games/').off('value',this.liveUpdateGame);
+}
+
+handleClickDatabase = () => {
+  console.log("funkar! nu kan användaren välja att byta till nästa fråga :)");
+
 
 }
 
@@ -156,7 +188,8 @@ componentDidMount(){
 
     return (<div>
                 <Timer startValue={10} timeBool={false} timesUp={this.timesUp} />
-                { this.state.currentGame !=="" ? <SingleQuest db={this.props.db} updateQuestion={this.updateQuestion} allQuests={ this.props.allQuests } currentGame={this.state.currentGame} qurrentQuestion={this.state.qurrentQuestion}/> : "" }
+                { this.state.currentGame !=="" ? <SingleQuest db={this.props.db} timeIsOut={this.state.timeIsOut} updateQuestion={this.updateQuestion} allQuests={ this.props.allQuests } currentGame={this.state.currentGame} qurrentQuestion={this.state.qurrentQuestion}/> : "" }
+                <button onClick={this.handleClickDatabase}>Nästa fråga!!</button>
             </div>);
   }
 }

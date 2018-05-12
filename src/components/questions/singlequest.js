@@ -18,7 +18,7 @@ class SingleQuest extends Component {
 
   handleClick = (index,rightanswer) => {
     let answerList = ["a","b","c","d"];
-    if (answerList[index]===rightanswer) {
+    if (answerList[index]===rightanswer && this.props.timeIsOut === false) {
       this.props.updateQuestion(true);
       console.log('rätt!!');
     }else {
@@ -58,13 +58,13 @@ class SingleQuest extends Component {
   getQuest = () => {
     let currentQuests = this.props.currentGame.questList;
     let allQuests = this.props.allQuests
-    console.log(currentQuests);
+    //console.log(currentQuests);
     let notAnsweredQuests = currentQuests.filter(quest => quest.answer === "x")
-    console.log('after filter ',notAnsweredQuests);
+    //console.log('after filter ',notAnsweredQuests);
     let questKey = notAnsweredQuests[0].questKey;
 
     let singleQuest = allQuests[questKey];
-    console.log('single ',singleQuest);
+    //console.log('single ',singleQuest);
     return singleQuest;
     //returner lista med val
   }
