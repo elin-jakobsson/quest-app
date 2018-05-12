@@ -200,10 +200,7 @@ handleClickDatabase = () => {
     return (<div>
                 <Timer startValue={10} timeBool={false} timesUp={this.timesUp} />
                 { this.state.currentGame !=="" ? <SingleQuest db={this.props.db} timeIsOut={this.state.timeIsOut} updateQuestion={this.updateQuestion} allQuests={ this.props.allQuests } currentGame={this.state.currentGame} qurrentQuestion={this.state.qurrentQuestion}/> : "" }
-<<<<<<< HEAD
                 <button onClick={this.handleClickDatabase}>Nästa fråga!!</button>
-=======
->>>>>>> 3827cc4c61e8ec9599672ff3b58b817cdac67f7f
             </div>);
   }
 }
