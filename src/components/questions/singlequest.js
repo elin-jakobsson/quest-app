@@ -8,13 +8,19 @@ class SingleQuest extends Component {
   } // constructor()
 
   render(){
-    let index = this.props.qurrentQuestion;
-    let questionArray = this.props.questionArray;
-    let question = questionArray[index].question;
-    console.log(index);
-    console.log(question);
+    let displayElement;
+    console.log(this.props.activeGame);
+    if (this.props.activeGame) {
+        displayElement= (<div>The game i active</div>)
+    }else {
+      let index = this.props.qurrentQuestion;
+      let questionArray = this.props.questionArray;
+      let question = questionArray[index].question;
+      displayElement= (<div>{question}</div>)
+    }
+
     return (<div>
-            <h1>{question}</h1>
+            <h1>{displayElement}</h1>
 
 
           </div>);
