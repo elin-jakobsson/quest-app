@@ -50,6 +50,8 @@ class SingleQuest extends Component {
       list.push(singelQuest.d);
     }
 
+
+
     let inputElements = list.map((item,index)=> (<li onClick={()=>this.handleClick(index,singelQuest.rightanswer)} key={"key"+index}> { answerList[index] }. { item } </li>));
     return inputElements;
     // retunera en klickbar lista med svarsalternativ
@@ -62,6 +64,7 @@ class SingleQuest extends Component {
     let notAnsweredQuests = currentQuests.filter(quest => quest.answer === "x")
     console.log('after filter ',notAnsweredQuests);
     let questKey = notAnsweredQuests[0].questKey;
+
 
     let singleQuest = allQuests[questKey];
     console.log('single ',singleQuest);

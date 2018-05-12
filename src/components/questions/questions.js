@@ -13,7 +13,7 @@ class Questions extends Component {
       currentGame: '',
       allQuest: '',
       qurrentQuestion: 0,
-      changequest : false
+      timeIsOut : false
     }
   }
 
@@ -100,8 +100,19 @@ isGameActive = (questList, gameList, item, user)=>{
   }
 } // isGameActive
 
-updateQuestion = (update)=>{
+updateQuestion = (rightAnswer)=>{
+  console.log("Funkar!!");
+  let game = this.state.currentGame;
+  let gameid = game.gameid;
+  let no;
 
+    //let keyOfObj = Object.keys(game.questList).find( key => game.questList[key] === gameid);
+  let keyOfObj = Object.keys(game.questList).find( key => key );
+  console.log("vart i listan skall väredet sättas: ",keyOfObj);
+
+  let evaluateAnswer;
+  ((rightAnswer=== true) ? evaluateAnswer = 1 : evaluateAnswer = 0);
+  //db.ref(`games/${gameid}/questList/${no}/answer`).set(evaluateAnswer)
 }
 
 fetchCategori = (questList,item)=>{
@@ -135,8 +146,8 @@ shuffleArray=(array)=>{
 
 timesUp = (timerFinished) => {
    if (timerFinished) {
-       this.setState({changequest : true}, () => {
-         console.log("Changequest status : " + this.state.changequest);
+       this.setState({timeIsOut : true}, () => {
+         console.log("Changequest status : " + this.state.timeIsOut);
        })
    }
 }
@@ -156,7 +167,7 @@ componentDidMount(){
 
     return (<div>
                 <Timer startValue={10} timeBool={false} timesUp={this.timesUp} />
-                { this.state.currentGame !=="" ? <SingleQuest db={this.props.db} updateQuestion={this.updateQuestion} allQuests={ this.props.allQuests } currentGame={this.state.currentGame} qurrentQuestion={this.state.qurrentQuestion}/> : "" }
+                { this.state.currentGame !=="" ? <SingleQuest db={this.props.db} timeIsOut={this.state.timeIsOut} updateQuestion={this.updateQuestion} allQuests={ this.props.allQuests } currentGame={this.state.currentGame} qurrentQuestion={this.state.qurrentQuestion}/> : "" }
             </div>);
   }
 }
