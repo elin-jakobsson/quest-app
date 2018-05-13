@@ -4,7 +4,8 @@ import './menu.css';
 let menuList = ["Spel","HighScore","Profile"]
 const Menu = (props) => {
   this.handleClick = item => {
-    props.changePage(item);
+    props.changePage(item);           // ändrar sida
+    props.updatePlayerReady(false);  // varje gång man klickar på menyn så innebär det att spelaren inte är redo.
   }
 
 

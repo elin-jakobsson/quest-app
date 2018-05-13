@@ -5,12 +5,9 @@ import Profile from './components/profile/profile'
 import Questions from './components/questions/questions'
 import Categories from './components/categories/categories.js';
 import Login from './components/login/login';
-import QuestStart from './components/queststart/queststart.js';
-import QuestBar from './components/questbar/questbar.js';
 import Menu from './components/menu/menu.js';
-import CountScore from './components/countscore/countscore.js';
 import Statistic from './components/statistic/statistic.js';
-
+import QuestStart from './components/queststart/queststart.js';
 
 var config = {
    apiKey: "AIzaSyAP1ELuVASv1aMYuXvbQk8N5B-fjIzNWP4",
@@ -36,7 +33,7 @@ class App extends Component {
       allQuests : "",
       allUsers: "",
       firebaseIsLoaded: false,
-
+      isPlayerReady : false
     }
   }
 
@@ -121,27 +118,63 @@ class App extends Component {
   chooseCategori = (item) => {
     this.setState({selectedCategori : item})
   }
+
+  updatePlayerReady = (isReady) => {
+    this.setState( { isPlayerReady: isReady })
+  }
+
   render() {
     let user;
     if(typeof this.state.currentUser === "object"){
       user = this.state.currentUser;
     }
 
+    let showComponents;
+    switch(this.state.currentPage) {
+      case "Spel" :
+        if ( this.state.selectedCategori === "" ) {
+          showComponents = ( <Categories selectedCategori = { this.chooseCategori}  />)
+        } else {
+          if( !this.state.isPlayerReady ){
+            showComponents = ( <QuestStart updatePlayerReady={ this.updatePlayerReady }/> )
+          } else {
+            showComponents = (
+              <Questions
+                db={db}
+                firebaseIsLoaded={this.state.firebaseIsLoaded}
+                allGames={this.state.allGames}
+                allQuests={this.state.allQuests}
+              />
+            )
+          }
+        }
+        break;
+
+      case "HighScore" :
+        showComponents = (
+          <Statistic
+            games ={ this.state.allGames }
+            users= { this.state.allUsers }
+            firebaseReady = { this.state.firebaseIsLoaded }
+          />
+        )
+        break;
+
+    }
 
 
     return (
       <div className="App">
         <Profile userinfo = {user} alterProfile = {this.state.currentPage}/>
+
+        { showComponents }
+
         <Login firebase={firebase} updateUser={this.getUserInfo}/>
-        {this.state.currentPage==="HighScore" ? <Questions db={db} firebaseIsLoaded={this.state.firebaseIsLoaded} allGames={this.state.allGames} allQuests={this.state.allQuests}/> : ""}
-        <Categories selectedCategori={this.chooseCategori} />
-        <QuestStart />
-        <QuestBar />
-        <Menu changePage={this.changePage} currentPage={this.state.currentPage}/>
-        <CountScore />
-
-        {this.state.currentPage==="HighScore" ? <Statistic games ={ this.state.allGames } users= { this.state.allUsers } firebaseReady = { this.state.firebaseIsLoaded }  /> : ""}
-
+        <Menu
+          changePage={this.changePage}
+          currentPage={this.state.currentPage}
+          updatePlayerReady={ this.updatePlayerReady }
+        />
       </div>
     );
   }

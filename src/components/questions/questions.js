@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import './questions.css';
 import SingleQuest from './singlequest';
 import Timer from '../timer/timer'
-
+import CountScore from '../countscore/countscore.js';
+import QuestBar from '../questbar/questbar.js';
 /* push ett till firebase med rätt info
   */
 
@@ -216,9 +217,10 @@ changeQuest = () => {
 
 
     return (<div>
+                <CountScore />
                 { !this.state.timeIsOut ? <Timer startValue={10} timeBool={false} timesUp={this.timesUp} /> : <p>{this.state.resultMessage}</p>}
                 { this.state.currentGame !=="" ? <SingleQuest db={this.props.db} changeQuest={this.changeQuest} timeIsOut={this.state.timeIsOut} updateQuestion={this.updateQuestion} allQuests={ this.props.allQuests } currentGame={this.state.currentGame} /> : "" }
-
+                <QuestBar />
             </div>);
   }
 }
