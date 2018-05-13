@@ -1,7 +1,6 @@
 import React from 'react';
 import './countscore.css';
 
-let listOfAnswer = [0,1,1,2,"x","x","x","x","x","x"]
 
 const CountScore = props => {
 

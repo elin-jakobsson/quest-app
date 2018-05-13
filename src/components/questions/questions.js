@@ -20,11 +20,36 @@ class Questions extends Component {
     }
   }
 
+componentDidMount(){
+  let allQuests = {...this.props.allQuests};
+  let allGames = {...this.props.allGames};
+  let item = 'css';
+  let userId = this.props.currentUser.userid;
+  let gameObj = this.isGameActive(allQuests,allGames,item, userId); // ett spel retuneras och väljs ut. Om det inte finns ett pågående skapas ett nytt inuti funktionen.
+
+  this.setState({ currentGame: gameObj }, () => { // sätter nuvarnade game och därefter sätts nuvarnade score
+    let listOfAnswer = this.countPlayerScore();
+    this.setState({listOfAnswer})
+  })
+
+  this.props.db.ref(`games/${gameObj.gameid}`).on('value',this.liveUpdateGame); //startar en lyssnare i databasen på games.. som vi kan använda
+
+}
+
+componentWillUnmount(){
+  this.props.db.ref('games/').off('value',this.liveUpdateGame);
+}
+
+liveUpdateGame = (snap) =>{
+  let data = snap.val();
+  this.setState({ liveUpdateCurrentGame : data })
+  console.log("uppdatering från databseen: ", data);
+}
+
+
+
 createNewGame = (allQuest, item, userId)=> {
   let newPostKey = this.props.db.ref('games/').child('posts').push().key;
-  // console.log(allQuest);
-  // console.log(item);
-  // console.log(userId);
   let gameObj = {
     questList:{
       0: {
@@ -76,7 +101,6 @@ createNewGame = (allQuest, item, userId)=> {
   }
 
   this.props.db.ref(`games/${newPostKey}`).set(gameObj);
-  console.log('new game',gameObj);
   return gameObj;
 } // createNewGame
 
@@ -91,11 +115,8 @@ isGameActive = (questList, gameList, item, user)=>{
 
   let currentGame = gamesArray.filter( game => game.category === item && game.completed === false)
 
-  console.log('current',currentGame.length);
-
   if (currentGame.length > 0) {
-     console.log(currentGame);
-     return currentGame[0];
+    return currentGame[0];
   }else {
     let newQuestList = this.fetchCategori(questList,item);
     let newgame = this.createNewGame(newQuestList, item, user)
@@ -104,14 +125,19 @@ isGameActive = (questList, gameList, item, user)=>{
 } // isGameActive
 
 updateQuestion = (rightAnswer)=>{
-  console.log("Funkar!!");
   let game = this.state.currentGame;
   let gameid = game.gameid;
   let questList = game.questList;
   let questNo = 0;
+  let endOfQuest = false;
+  let limitOfQuests = 9
+
   while(questList[questNo].answer !== "x"){  //letar rätt på första frågan som inte besvarats
     questNo++
     if(questNo > 9){ break; }
+  }
+  if( questNo >= limitOfQuests ){
+    endOfQuest = true;
   }
 
   let rightMessages = ['Grattis, det var RÄTT', 'Supper bra', 'Hackerman :)', 'Awesome Gitman', '!false :)', 'Master of everything', 'The queen/king of code', 'TRUE', 'Great!!', 'You are awesome']
@@ -130,8 +156,6 @@ updateQuestion = (rightAnswer)=>{
     msg = wrongMessages[posWrong];
   }
 
-  console.log(evaluateAnswer);
-
 
   // räkna ut aktuell poäng för användaren
   let listOfAnswer = this.countPlayerScore(evaluateAnswer);
@@ -143,22 +167,31 @@ updateQuestion = (rightAnswer)=>{
     timeIsOut: true,
     listOfAnswer
   });
-
+  if(endOfQuest){
+    this.props.db.ref(`games/${gameid}/completed`).set(endOfQuest); // om det är sista questen så sätts completed till true i firebase databas.
+  }
   this.props.db.ref(`games/${gameid}/questList/${questNo}/answer`).set(evaluateAnswer); //uppdaterar databasen
 }
 
 countPlayerScore = (evaluateAnswer) => {
-  let bonus = 2;
   let bonusLevel = 2;
+  let bonus = 2;
   let rightAnswer = 1;
-  let wrongAnswer = 0;
+
 
   let firstX = true;
   if(evaluateAnswer === undefined){ // om vi inte skickar in något värde till räknaren så vill vi inte lägga in användarens svar i listan listOfAnswer.
     firstX = false
   }
   let countRightAnswerInRow = 0;
-  let listOfAnswer = this.state.currentGame.questList.map( item => {
+
+  let questObj = this.state.currentGame.questList;
+  let questArray = [];
+  for(let quest in questObj){
+    questArray.push(questObj[quest])
+  }
+
+  let listOfAnswer = questArray.map( item => {
     let answer;
     if(item.answer ==="x" && firstX){
       answer = evaluateAnswer;
@@ -222,50 +255,33 @@ timesUp = (timerFinished) => {
    }
 }
 
-componentDidMount(){
-  let allQuests = {...this.props.allQuests};
-  let allGames = {...this.props.allGames};
-  let item = 'css';
-  let userId = 'elinkey';
 
-  let gameObj = this.isGameActive(allQuests,allGames,item, userId); // ett spel retuneras och väljs ut. Om det inte finns ett pågående skapas ett nytt inuti funktionen.
-
-  this.setState({ currentGame: gameObj }, () => { // sätter nuvarnade game och därefter sätts nuvarnade score
-    let listOfAnswer = this.countPlayerScore();
-    this.setState({listOfAnswer})
-  })
-
-  this.props.db.ref(`games/${gameObj.gameid}`).on('value',this.liveUpdateGame); //startar en lyssnare i databasen på games.. som vi kan använda
-
-}
-
-liveUpdateGame = (snap) =>{
-  let data = snap.val();
-  this.setState({ liveUpdateCurrentGame : data })
-  console.log("uppdatering från databseen: ", data);
-}
-
-componentWillUnmount(){
-  this.props.db.ref('games/').off('value',this.liveUpdateGame);
-}
-
-changeQuest = () => {
+changeQuest = (endOfQuest) => {
   // uppdatear state current game med ny live data
   // starta även timern
-  let gameObj = this.state.liveUpdateCurrentGame;
-  this.setState({
-    currentGame: gameObj,
-    timeIsOut : false
-  })
+  if(endOfQuest){
+    console.log("inga fler frågor!");
+  }else{
+    let gameObj = this.state.liveUpdateCurrentGame;
+    this.setState({
+      currentGame: gameObj,
+      timeIsOut : false
+    })
+
+
+  }
+
+
 
 }
+
 
   render() {
 
     return (<div>
                 <CountScore listOfAnswer= { this.state.listOfAnswer } />
                 { !this.state.timeIsOut ? <Timer startValue={10} timeBool={false} timesUp={this.timesUp} /> : <p>{this.state.resultMessage}</p>}
-                { this.state.currentGame !=="" ? <SingleQuest db={this.props.db} changeQuest={this.changeQuest} timeIsOut={this.state.timeIsOut} updateQuestion={this.updateQuestion} allQuests={ this.props.allQuests } currentGame={this.state.currentGame} /> : "" }
+                { this.state.currentGame !=="" ? <SingleQuest changeQuest={this.changeQuest} timeIsOut={this.state.timeIsOut} updateQuestion={this.updateQuestion} allQuests={ this.props.allQuests } currentGame={this.state.currentGame} /> : "" }
                 <QuestBar listOfAnswer = { this.state.listOfAnswer }/>
             </div>);
   }

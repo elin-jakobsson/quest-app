@@ -150,6 +150,7 @@ class App extends Component {
                 firebaseIsLoaded={this.state.firebaseIsLoaded}
                 allGames={this.state.allGames}
                 allQuests={this.state.allQuests}
+                currentUser={ this.state.currentUser }
               />
             )
           }
