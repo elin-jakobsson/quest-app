@@ -1,7 +1,6 @@
 import React from 'react';
 import './countscore.css';
 
-let listOfAnswer = [0,1,1,2,"x","x","x","x","x","x"]
 
 const CountScore = props => {
 
@@ -29,7 +28,7 @@ const CountScore = props => {
     return current
   };
 
-  let score = scoreCount(listOfAnswer,calcFunction,0);
+  let score = scoreCount(props.listOfAnswer,calcFunction,0);
   return (
       <div className="component container-countscore">
         <div>{ score }p</div>

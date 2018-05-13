@@ -81,11 +81,17 @@ class App extends Component {
   getDataFromFirebase = () => {  // med ett promise som ändrar status på firebaseIsLoaded när all data är hämtad från firebase
 
     let promiseOne = new Promise((resolve, reject)=>{
-      db.ref('games/').once('value').then(snap=>{
+      // db.ref('games/').once('value').then(snap=>{
+      //   let data = snap.val();
+      //   this.setState({ allGames : data })
+      //   resolve();
+      // })
+
+      db.ref(`games/`).on('value', (snap)=>{ // live uppdatering
         let data = snap.val();
         this.setState({ allGames : data })
         resolve();
-      })
+      });
     })
 
     let promiseTwo = new Promise((resolve, reject)=>{
@@ -147,6 +153,7 @@ class App extends Component {
                 firebaseIsLoaded={this.state.firebaseIsLoaded}
                 allGames={this.state.allGames}
                 allQuests={this.state.allQuests}
+                currentUser={ this.state.currentUser }
               />
             )
           }

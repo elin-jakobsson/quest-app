@@ -60,9 +60,22 @@ class SingleQuest extends Component {
   getQuest = () => {
 
     let currentQuests = this.props.currentGame.questList;
+    if(currentQuests.length < 1){
+      return false;
+    }
     let allQuests = this.props.allQuests
     //console.log(currentQuests);
-    let notAnsweredQuests = currentQuests.filter(quest => quest.answer === "x")
+    //let notAnsweredQuests = currentQuests.filter(quest => quest.answer === "x")
+    let notAnsweredQuests = []
+    for(let quest in currentQuests ){
+      let selectedQuest = currentQuests[quest];
+
+      if(selectedQuest.answer === "x"){
+        notAnsweredQuests.push(selectedQuest);
+      }
+    }
+
+
 
     let questionsLeft = notAnsweredQuests.length;
     //this.setState({questionsLeft});
@@ -78,13 +91,19 @@ class SingleQuest extends Component {
 
   render(){
     let obj = this.getQuest();
+    if(!obj){
+      console.log("fail!");
+    }
     let chooices = this.getchooices(obj.singleQuest)
 
     let nextButton;
     if (obj.questionsLeft > 1) {
-      nextButton = (<button onClick={ this.props.changeQuest }>Nästa </button>)
+      let endOfQuest = false;
+      console.log(obj.questionsLeft);
+      nextButton = (<button onClick={ ()=> this.props.changeQuest(endOfQuest) }>Nästa </button>)
     } else {
-      nextButton= (<button onClick={ this.props.changeQuest }>Fortsätt </button>)
+      let endOfQuest = true;
+      nextButton= (<button onClick={ () => this.props.changeQuest(endOfQuest) }>Fortsätt </button>)
     }
 
     return (<div>
