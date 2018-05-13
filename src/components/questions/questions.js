@@ -16,7 +16,7 @@ class Questions extends Component {
       timeIsOut : false,
       liveUpdateCurrentGame: "",
       resultMessage: '',
-      listOfAnswer: []
+      listOfAnswer: [],
     }
   }
 
@@ -43,7 +43,7 @@ componentWillUnmount(){
 liveUpdateGame = (snap) =>{
   let data = snap.val();
   this.setState({ liveUpdateCurrentGame : data })
-  console.log("uppdatering från databseen: ", data);
+  //console.log("uppdatering från databseen: ", data);
 }
 
 
@@ -160,7 +160,7 @@ updateQuestion = (rightAnswer)=>{
 
   // räkna ut aktuell poäng för användaren
   let listOfAnswer = this.countPlayerScore(evaluateAnswer);
-  console.log(listOfAnswer);
+  //console.log(listOfAnswer);
   //
 
   this.setState({
@@ -172,6 +172,7 @@ updateQuestion = (rightAnswer)=>{
     this.props.db.ref(`games/${gameid}/completed`).set(endOfQuest); // om det är sista questen så sätts completed till true i firebase databas.
   }
   this.props.db.ref(`games/${gameid}/questList/${questNo}/answer`).set(evaluateAnswer); //uppdaterar databasen
+
 }
 
 countPlayerScore = (evaluateAnswer) => {
@@ -268,19 +269,20 @@ changeQuest = (endOfQuest) => {
       currentGame: gameObj,
       timeIsOut : false
     })
-
-
   }
-
-
-
 }
-
+setScoreOfGame = (score,saveToFirbase) => {
+  //this.setState({score})
+  let gameid = this.state.currentGame.gameid;
+  if(saveToFirbase){
+    this.props.db.ref(`games/${gameid}/score/`).set(score);
+  }
+}
 
   render() {
 
     return (<div>
-                <CountScore listOfAnswer= { this.state.listOfAnswer } />
+                <CountScore listOfAnswer= { this.state.listOfAnswer } setScoreOfGame={ this.setScoreOfGame }/>
                 { !this.state.timeIsOut ? <Timer startValue={10} timeBool={false} timesUp={this.timesUp} /> : <p>{this.state.resultMessage}</p>}
                 { this.state.currentGame !=="" ? <SingleQuest changeQuest={this.changeQuest} timeIsOut={this.state.timeIsOut} updateQuestion={this.updateQuestion} allQuests={ this.props.allQuests } currentGame={this.state.currentGame} /> : "" }
                 <QuestBar listOfAnswer = { this.state.listOfAnswer }/>
