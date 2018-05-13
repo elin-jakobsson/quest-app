@@ -26,7 +26,7 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      currentPage: "Spel",
+      currentPage: "",
       currentUser : "",
       selectedCategori : "",
       allGames : "",
@@ -130,14 +130,6 @@ class App extends Component {
   }
 
   render() {
-    let user;
-    // let userinfo;
-    if(typeof this.state.currentUser === "object"){
-      user = this.state.currentUser;
-    }
-    // if(typeof this.state.allUsers === "object"){
-    //   userinfo = this.state.allUsers;
-    // }
 
     let showComponents;
     switch(this.state.currentPage) {
@@ -172,8 +164,7 @@ class App extends Component {
         break;
 
       case "Profile" :
-        showComponents = (<Profile userinfo = {user} alterProfile = {this.state.currentPage}
-          allGames={this.state.allGames} allUsers={this.state.allUsers}/>)
+        showComponents = ""
         break;
       default :
         showComponents = "Fail to load components"
@@ -184,10 +175,13 @@ class App extends Component {
 
     return (
       <div className="App">
+        {this.state.currentUser ? <Profile  currentPage = {this.state.currentPage}
+          allGames={this.state.allGames} allUsers={this.state.allUsers} user={this.state.currentUser} db={db}/> : "" }
+
         { showComponents }
 
-        <Login firebase={firebase} updateUser={this.getUserInfo} firebaseReady = { this.state.firebaseIsLoaded }
-           users = { this.state.allUsers  } db = {db}/>
+        <Login changePage={this.changePage} firebase={firebase} updateUser={this.getUserInfo} firebaseReady = { this.state.firebaseIsLoaded }
+           users = { this.state.allUsers  } db  = {db}/>
         <Menu
           changePage={this.changePage}
           currentPage={this.state.currentPage}

@@ -6,8 +6,8 @@ class Profile extends Component {
         super(props);
         this.state = {
             isLoading: true,
-            isEditable : false,
-            inputData : ""
+            isEditable: false,
+            inputData:this.props.user.name
         }
     }
     componentDidUpdate() {
@@ -15,14 +15,15 @@ class Profile extends Component {
             if (typeof this.props.allGames === "object" && typeof this.props.allUsers === "object") {
                 this.calculateScores(this.props.allGames, this.props.allUsers);
                 this.setState({isLoading: false})
+
             }
         }
     }
     calculateScores = (arrayGames, user) => {
-      let listOfGames = [];
-      for(let game in arrayGames){
-        listOfGames.push(game);
-      }
+        let listOfGames = [];
+        for (let game in arrayGames) {
+            listOfGames.push(game);
+        }
         let newUserStat = {
             cssTotal: 0,
             cssHigh: 0,
@@ -50,47 +51,74 @@ class Profile extends Component {
     }
 
     editInfo = () => {
-      if(this.state.isEditable === false)
-      this.setState({isEditable : true})
-      else
-      this.setState({isEditable : false})
+        if (this.state.isEditable === false)
+            this.setState({isEditable: true})
+        else
+            this.setState({isEditable: false})
     }
 
-    handleChange = (e) =>{
-      this.setState({inputData : e.target.value})
+    handleChange = (e) => {
+        this.setState({inputData: e.target.value})
     }
 
-    alterProfile = (menuOption, user, gameValues) => {
+    compareInputWithDb = (newName, name, uid) => {
+        if (this.state.inputData !== "" || this.state.inputData === "name") {
+            let db = this.props.db;
+            db.ref(`users/${uid}/name`).set(newName);
+        }
+    }
+
+    alterProfile = (menuOption, currentUser, gameValues, listOfUsers) => {
         let userObj = {};
-        // console.log(gameValues);
-        if (typeof user === "object") {
-            userObj = {
-                img: user.img,
-                name: user.name
+        console.log(menuOption);
+
+        if (typeof currentUser === "object" && typeof listOfUsers === "object") {
+            for (let user in listOfUsers) {
+                if (listOfUsers[user].authid === currentUser.authid) {
+
+                    let img = listOfUsers[user].img;
+                    let name = listOfUsers[user].name;
+                    let uid = listOfUsers[user].uid
+                    userObj = {
+                        img,
+                        name,
+                        uid
+                    }
+                }
             }
             // this.setState({inputData : user.name})
         }
-        let editconditions = () =>{
-          if(this.state.isEditable){
-            return(<div className="profile-header">
-              <div className="editUserInfo"><p onClick={this.editInfo}>Edit</p><div><img onClick={this.editInfo} alt="" src="img/edit-icon.png"/></div></div>
-                <div className="profilePage-imgcontainer">
-                    <img alt="" src={userObj.img}/></div>
-                <div>
-                    <label><input onChange={(e) => this.handleChange} value={this.state.inputData}></input></label>
-                </div>
-            </div>)
-          }
-          else{
-            return(<div className="profile-header">
-              <div className="editUserInfo"><p onClick={this.editInfo}>Edit</p><div><img onClick={this.editInfo} alt="" src="img/edit-icon.png"/></div></div>
-                <div className="profilePage-imgcontainer">
-                    <img alt="" src={userObj.img}/></div>
-                <div>
-                    <p>{userObj.name}</p>
-                </div>
-            </div>)
-          }
+        let editconditions = () => {
+            if (this.state.isEditable) {
+                return (<div className="profile-header">
+                    <div className="editUserInfo">
+                        <p onClick={this.editInfo}>Edit</p>
+                        <div><img onClick={this.editInfo} alt="" src="img/edit-icon.png"/></div>
+                    </div>
+                    <div className="profilePage-imgcontainer">
+                        <img alt="" src={userObj.img}/></div>
+                    <div>
+                        <label>
+                            <input onChange={(e) => this.handleChange(e)} value={this.state.inputData}></input>
+                        </label>
+                    </div>
+                </div>)
+            } else {
+                if (!this.state.isEditable) {
+                    this.compareInputWithDb(this.state.inputData, userObj.name, userObj.uid)
+                }
+                return (<div className="profile-header">
+                    <div className="editUserInfo">
+                        <p onClick={this.editInfo}>Edit</p>
+                        <div><img onClick={this.editInfo} alt="" src="img/edit-icon.png"/></div>
+                    </div>
+                    <div className="profilePage-imgcontainer">
+                        <img alt="" src={userObj.img}/></div>
+                    <div>
+                        <p>{this.state.inputData}</p>
+                    </div>
+                </div>)
+            }
         }
 
         if (menuOption === "Profile") {
@@ -101,7 +129,7 @@ class Profile extends Component {
             }
 
             return (<div className="component profilePage-container">
-                    {editconditions()}
+                {editconditions()}
                 <div className="highestScoreSection">
                     <div className="higestScoreContent">
                         <h3>Högsta spel poäng</h3>
@@ -154,7 +182,7 @@ class Profile extends Component {
                 <div className="img-container"><img alt="" src={userObj.img}/></div>
                 <div className="userInfo-container">
                     <div>
-                        <h3>{userObj.name}</h3>
+                        <h3>{this.state.inputData}</h3>
                     </div>
                     <div>
                         <p>Poäng :</p>
@@ -168,8 +196,7 @@ class Profile extends Component {
     }
 
     render() {
-
-        return (this.alterProfile(this.props.alterProfile, this.props.userinfo, this.calculateScores()));
+        return (this.alterProfile(this.props.currentPage, this.props.user, this.calculateScores(), this.props.allUsers));
     }
 }
 
