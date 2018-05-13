@@ -103,7 +103,7 @@ class SingleQuest extends Component {
     let nextButton;
     if (obj.questionsLeft > 1) {
       let endOfQuest = false;
-      console.log(obj.questionsLeft);
+      //console.log(obj.questionsLeft);
       nextButton = (<button onClick={ ()=> this.props.changeQuest(endOfQuest) }>Nästa </button>)
     } else {
       let endOfQuest = true;

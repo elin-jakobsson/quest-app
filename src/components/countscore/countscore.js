@@ -2,9 +2,28 @@ import React from 'react';
 import './countscore.css';
 
 
-const CountScore = props => {
+class CountScore extends React.Component {
+  state = {
+    score: 0
+  }
+  componentDidMount(){
+    let score = this.scoreCount(this.props.listOfAnswer,this.calcFunction,0);
+    this.setState({score})
+    let saveToFirbase = false;
+    this.props.setScoreOfGame(score,saveToFirbase);
+  }
+  componentDidUpdate (){
+    let score = this.scoreCount(this.props.listOfAnswer,this.calcFunction,0);
 
-  let calcFunction = (current, bonusCount) => {
+    if(this.state.score !== score){ // kontroll så vi inte skicka flera request till firebase till att spara data för score
+       this.setState({score})
+       let saveToFirbase = true;
+       this.props.setScoreOfGame(score,saveToFirbase);
+    }
+
+  }
+
+  calcFunction = (current, bonusCount) => {
     if(bonusCount > 1 ) {
       return (current += 15 + 10 * (bonusCount-1))
     }else if (bonusCount >= 1 ) {
@@ -14,7 +33,7 @@ const CountScore = props => {
     }
   }
 
-  let scoreCount = (array,calculate,start) => {
+  scoreCount = (array,calculate,start) => {
     let current = start;
     let bonusCount = 0;
     for(let item of array){
@@ -28,13 +47,16 @@ const CountScore = props => {
     return current
   };
 
-  let score = scoreCount(props.listOfAnswer,calcFunction,0);
-  return (
-      <div className="component container-countscore">
-        <div>{ score }p</div>
-      </div>
-  );
 
+  render(){
+
+
+    return (
+      <div className="component container-countscore">
+        <div>{ this.state.score }p</div>
+      </div>
+    );
+  }
 }
 
 export default CountScore;
