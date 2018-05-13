@@ -2,6 +2,12 @@ import React, { Component } from 'react';
 import './questions.css';
 
 
+
+/*TODO
+  triga ett en function när tiden går i singlequest
+
+*/
+
 class SingleQuest extends Component {
   constructor(props){
     super(props);
@@ -49,8 +55,6 @@ class SingleQuest extends Component {
     if(singelQuest.hasOwnProperty("d")){
       list.push(singelQuest.d);
     }
-
-
 
     let inputElements = list.map((item,index)=> (<li onClick={()=>this.handleClick(index,singelQuest.rightanswer)} key={"key"+index}> { answerList[index] }. { item } </li>));
     return inputElements;

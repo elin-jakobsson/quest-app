@@ -130,7 +130,8 @@ class App extends Component {
   }
 
   render() {
-    let user,userinfo;
+    let user;
+    // let userinfo;
     if(typeof this.state.currentUser === "object"){
       user = this.state.currentUser;
     }

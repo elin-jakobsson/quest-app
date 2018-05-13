@@ -119,6 +119,7 @@ isGameActive = (questList, gameList, item, user)=>{
     return currentGame[0];
   }else {
     let newQuestList = this.fetchCategori(questList,item);
+    console.log('the new questLIst when a game is created ', newQuestList); // uppstod error här om man inte får en list, kan uppstå vid dåligt intenet
     let newgame = this.createNewGame(newQuestList, item, user)
     return newgame;
   }
