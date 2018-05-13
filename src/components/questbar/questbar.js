@@ -10,7 +10,7 @@ let bgColor = {
 }
 
 const QuestBar = props =>{
-  let questbar = list.map((item,index) => {
+  let questbar = props.listOfAnswer.map((item,index) => {
     return (<div key={index} style={{backgroundColor: bgColor[item] }} className="boxBar"></div>)
   })
 

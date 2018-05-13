@@ -15,8 +15,8 @@ class Questions extends Component {
       allQuest: '',
       timeIsOut : false,
       liveUpdateCurrentGame: "",
-      resultMessage: ''
-
+      resultMessage: '',
+      listOfAnswer: []
     }
   }
 
@@ -133,13 +133,57 @@ updateQuestion = (rightAnswer)=>{
   console.log(evaluateAnswer);
 
 
-  this.setState({resultMessage: msg,
-                  timeIsOut: true });
+  // räkna ut aktuell poäng för användaren
+  let listOfAnswer = this.countPlayerScore(evaluateAnswer);
+  console.log(listOfAnswer);
+  //
+
+  this.setState({
+    resultMessage: msg,
+    timeIsOut: true,
+    listOfAnswer
+  });
 
   this.props.db.ref(`games/${gameid}/questList/${questNo}/answer`).set(evaluateAnswer); //uppdaterar databasen
-
-
 }
+
+countPlayerScore = (evaluateAnswer) => {
+  let bonus = 2;
+  let bonusLevel = 2;
+  let rightAnswer = 1;
+  let wrongAnswer = 0;
+
+  let firstX = true;
+  if(evaluateAnswer === undefined){ // om vi inte skickar in något värde till räknaren så vill vi inte lägga in användarens svar i listan listOfAnswer.
+    firstX = false
+  }
+  let countRightAnswerInRow = 0;
+  let listOfAnswer = this.state.currentGame.questList.map( item => {
+    let answer;
+    if(item.answer ==="x" && firstX){
+      answer = evaluateAnswer;
+      firstX = false;
+    }else {
+      answer = item.answer;
+    }
+
+    if(answer === rightAnswer){
+      countRightAnswerInRow++
+    }else{
+      countRightAnswerInRow = 0;
+    }
+
+    if(countRightAnswerInRow > bonusLevel ) {
+      return bonus;  // retunerar 2
+    } else if (!countRightAnswerInRow) {
+      return answer; // retunerar x alterinativt 0
+    } else {
+      return rightAnswer; // retunerar 1
+    }
+  });
+  return listOfAnswer
+}
+
 
 fetchCategori = (questList,item)=>{
   let array = [];
@@ -181,13 +225,18 @@ timesUp = (timerFinished) => {
 componentDidMount(){
   let allQuests = {...this.props.allQuests};
   let allGames = {...this.props.allGames};
-
   let item = 'css';
   let userId = 'elinkey';
+
   let gameObj = this.isGameActive(allQuests,allGames,item, userId); // ett spel retuneras och väljs ut. Om det inte finns ett pågående skapas ett nytt inuti funktionen.
 
-  this.setState({currentGame: gameObj})
+  this.setState({ currentGame: gameObj }, () => { // sätter nuvarnade game och därefter sätts nuvarnade score
+    let listOfAnswer = this.countPlayerScore();
+    this.setState({listOfAnswer})
+  })
+
   this.props.db.ref(`games/${gameObj.gameid}`).on('value',this.liveUpdateGame); //startar en lyssnare i databasen på games.. som vi kan använda
+
 }
 
 liveUpdateGame = (snap) =>{
@@ -201,7 +250,6 @@ componentWillUnmount(){
 }
 
 changeQuest = () => {
-  console.log("funkar! nu kan användaren välja att byta till nästa fråga :)");
   // uppdatear state current game med ny live data
   // starta även timern
   let gameObj = this.state.liveUpdateCurrentGame;
@@ -214,13 +262,11 @@ changeQuest = () => {
 
   render() {
 
-
-
     return (<div>
-                <CountScore />
+                <CountScore listOfAnswer= { this.state.listOfAnswer } />
                 { !this.state.timeIsOut ? <Timer startValue={10} timeBool={false} timesUp={this.timesUp} /> : <p>{this.state.resultMessage}</p>}
                 { this.state.currentGame !=="" ? <SingleQuest db={this.props.db} changeQuest={this.changeQuest} timeIsOut={this.state.timeIsOut} updateQuestion={this.updateQuestion} allQuests={ this.props.allQuests } currentGame={this.state.currentGame} /> : "" }
-                <QuestBar />
+                <QuestBar listOfAnswer = { this.state.listOfAnswer }/>
             </div>);
   }
 }
