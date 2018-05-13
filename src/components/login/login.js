@@ -2,11 +2,33 @@ import React, {Component} from 'react';
 import "./login.css";
 
 class Login extends Component {
+  // constructor(props){
+  //   super(props);
+  //   this.state = {
+  //     // wantToUpdate : true
+  //   }
+  // }
+
+  // componentDidUpdat(){
+  //    if(this.props.firebaseReady){ // om firebase är redo
+  //      if(this.state.wantToUpdate){ // om vi vill updatera komponenten.
+  //        this.setState({wantToUpdate: false})
+  //      }
+  //    }
+  //  }
 
     componentDidMount() {
-        this.observUser();
-    }
+      this.observUser(this.props.users);
 
+    }
+    checkUserOnDb = (users) =>{
+      console.log(this.props.users);
+      console.log(users);
+      let db = this.props.db;
+      for(let user in users){
+        console.log(users[user]);
+      }
+    }
     observUser = () => {
         this.props.firebase.auth().onAuthStateChanged((user) => {
             if (user) {
@@ -19,7 +41,7 @@ class Login extends Component {
                 // var emailVerified = user.emailVerified;
                 // var isAnonymous = user.isAnonymous;
                 // var providerData = user.providerData;
-
+                // this.checkUserOnDb(users);
                 let userObj = {
                     img: photoURL,
                     userid: uid,
@@ -61,8 +83,8 @@ class Login extends Component {
         }
 
         return (<div className="component container-login">
-            <div>
-                <img alt="Logo"></img>
+            <div className="quest-logoContainer">
+                <img alt="Logo" src="img/logo-quest.png"></img>
             </div>
             <div className="loginSection">
               <h2>Logga in </h2>

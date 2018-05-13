@@ -124,10 +124,13 @@ class App extends Component {
   }
 
   render() {
-    let user;
+    let user,userinfo;
     if(typeof this.state.currentUser === "object"){
       user = this.state.currentUser;
     }
+    // if(typeof this.state.allUsers === "object"){
+    //   userinfo = this.state.allUsers;
+    // }
 
     let showComponents;
     switch(this.state.currentPage) {
@@ -161,18 +164,18 @@ class App extends Component {
         break;
 
       case "Profile" :
-        showComponents = ""
+        showComponents = (<Profile userinfo = {user} alterProfile = {this.state.currentPage}
+          allGames={this.state.allGames} allUsers={this.state.allUsers}/>)
         break;
       default :
         showComponents = "Fail to load components"
+
 
     }
 
 
     return (
       <div className="App">
-        <Profile userinfo = {user} alterProfile = {this.state.currentPage}/>
-
         { showComponents }
 
         <Login firebase={firebase} updateUser={this.getUserInfo}/>
