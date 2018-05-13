@@ -2,42 +2,56 @@ import React, {Component} from 'react';
 import "./login.css";
 
 class Login extends Component {
-  // constructor(props){
-  //   super(props);
-  //   this.state = {
-  //     // wantToUpdate : true
-  //   }
-  // }
+  constructor(props){
+    super(props);
+    this.state = {
+      wantToUpdate : true
+    }
+  }
 
-  // componentDidUpdat(){
-  //    if(this.props.firebaseReady){ // om firebase är redo
-  //      if(this.state.wantToUpdate){ // om vi vill updatera komponenten.
-  //        this.setState({wantToUpdate: false})
-  //      }
-  //    }
-  //  }
 
-    componentDidMount() {
+    componentDidUpdate() {
+      if(this.props.firebaseReady){
+        if(this.state.wantToUpdate){
       this.observUser(this.props.users);
+      this.setState({wantToUpdate:false})
+    }
+  }
 
     }
-    checkUserOnDb = (users) =>{
-      console.log(this.props.users);
-      console.log(users);
+    checkUserOnDb = (users,name,img,uid) =>{
       let db = this.props.db;
-      for(let user in users){
-        console.log(users[user]);
+      let userExist = false;
+      let newUser = {};
+      let newPostKey = db.ref('users/').child('posts').push().key;
+
+      newUser = {
+        img,
+        name,
+        uid
       }
+
+      for(let user in users){
+        if(users[user].uid === uid){
+          userExist = true;
+        }
+      }
+        if(!userExist){
+          db.ref(`users/${newPostKey}`).set(newUser);
+        }
     }
-    observUser = () => {
+    observUser = (users) => {
         this.props.firebase.auth().onAuthStateChanged((user) => {
             if (user) {
-                // User is signed in.
-                var displayName = user.displayName;
-                var email = user.email;
-                var photoURL = user.photoURL;
-                var uid = user.uid;
 
+                // User is signed in.
+                let displayName = user.displayName;
+                let email = user.email;
+                let photoURL = user.photoURL;
+                let uid = user.uid;
+
+                // Checking database if user already exist
+                this.checkUserOnDb(users,displayName,photoURL,uid);
                 // var emailVerified = user.emailVerified;
                 // var isAnonymous = user.isAnonymous;
                 // var providerData = user.providerData;

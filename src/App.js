@@ -178,7 +178,8 @@ class App extends Component {
       <div className="App">
         { showComponents }
 
-        <Login firebase={firebase} updateUser={this.getUserInfo}/>
+        <Login firebase={firebase} updateUser={this.getUserInfo} firebaseReady = { this.state.firebaseIsLoaded }
+           users = { this.state.allUsers  } db = {db}/>
         <Menu
           changePage={this.changePage}
           currentPage={this.state.currentPage}
