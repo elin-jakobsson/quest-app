@@ -160,6 +160,12 @@ class App extends Component {
         )
         break;
 
+      case "Profile" :
+        showComponents = ""
+        break;
+      default :
+        showComponents = "Fail to load components"
+
     }
 
 
