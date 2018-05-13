@@ -6,6 +6,7 @@ const QuestStart = props =>{
 
   this.handleStartGame=()=>{
     console.log("skicka upp ett värde till parent!!");
+    props.updatePlayerReady(true);
   }
   return(
     <div className="component container-queststart">

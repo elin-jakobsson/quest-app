@@ -61,6 +61,34 @@
   padding: 25px;
 }
 
+.profile-header input{
+background-color: inherit;
+border-style: none;
+outline: none;
+border-bottom: 1.5px solid #FFC216;
+}
+
+.editUserInfo{
+  position: absolute;
+  top:15px;
+  right: 15px;
+  display:flex;
+  align-items: center;
+}
+.editUserInfo div{
+  width: 30px;
+  height: 30px;
+}
+.editUserInfo p{
+  margin-right: 10px;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.editUserInfo div img{
+width: 100%;
+height: 100%;
+cursor: pointer;
+}
 .profilePage-imgcontainer {
   width: 80px;
   height: 80px;
