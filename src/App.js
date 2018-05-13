@@ -129,15 +129,19 @@ class App extends Component {
     this.setState({selectedCategori : item})
   }
   render() {
-    let user;
+    let user,userinfo;
     if(typeof this.state.currentUser === "object"){
       user = this.state.currentUser;
     }
+    // if(typeof this.state.allUsers === "object"){
+    //   userinfo = this.state.allUsers;
+    // }
 
     return (
       <div className="App">
-        <Profile userinfo = {user} alterProfile = {this.state.currentPage}/>
-        <Login firebase={firebase} updateUser={this.getUserInfo}/>
+        <Profile userinfo = {user} alterProfile = {this.state.currentPage}
+          allGames={this.state.allGames} allUsers={this.state.allUsers}/>
+        <Login firebase={firebase} updateUser={this.getUserInfo} db={db} users={ this.state.allUsers} firebaseReady={this.state.firebaseIsLoaded}/>
         <Questions allGames={this.state.allGames} allQuests={this.state.allQuests}/>
         <Categories selectedCategori={this.chooseCategori} />
         <QuestStart />

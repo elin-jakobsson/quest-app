@@ -76,7 +76,7 @@ fetchCategori = (questList,item)=>{
   let array = [];
 
   for(let obj in questList){
-    console.log(questList[obj]);
+    // console.log(questList[obj]);
     if (questList[obj].category === item) {
       array.push(questList[obj]);
     }
