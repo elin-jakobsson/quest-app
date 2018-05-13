@@ -2,30 +2,25 @@ import React, {Component} from 'react';
 import "./login.css";
 
 class Login extends Component {
-  constructor(props){
-    super(props);
-    this.state = {
-      wantToUpdate : true
+  // constructor(props){
+  //   super(props);
+  //   this.state = {
+  //     // wantToUpdate : true
+  //   }
+  // }
+
+  // componentDidUpdat(){
+  //    if(this.props.firebaseReady){ // om firebase är redo
+  //      if(this.state.wantToUpdate){ // om vi vill updatera komponenten.
+  //        this.setState({wantToUpdate: false})
+  //      }
+  //    }
+  //  }
+
+    componentDidMount() {
+      this.observUser(this.props.users);
+
     }
-  }
-
-  componentDidUpdat(){
-     if(this.props.firebaseReady){ // om firebase är redo
-       if(this.state.wantToUpdate){ // om vi vill updatera komponenten.
-         this.observUser(this.props.users);
-         this.setState({wantToUpdate: false})
-       }
-     }
-   }
-
-    // componentDidMount() {
-    //   let catchData = new promise((resolve,reject ) =>{
-    //     resolve(if(typeof this.props.users === "object"){
-    //     })
-    //   }).then( =>{
-    //     this.observUser(this.props.users);
-    //   })
-    // }
     checkUserOnDb = (users) =>{
       console.log(this.props.users);
       console.log(users);
@@ -34,7 +29,7 @@ class Login extends Component {
         console.log(users[user]);
       }
     }
-    observUser = (users) => {
+    observUser = () => {
         this.props.firebase.auth().onAuthStateChanged((user) => {
             if (user) {
                 // User is signed in.
@@ -46,7 +41,7 @@ class Login extends Component {
                 // var emailVerified = user.emailVerified;
                 // var isAnonymous = user.isAnonymous;
                 // var providerData = user.providerData;
-                this.checkUserOnDb(users);
+                // this.checkUserOnDb(users);
                 let userObj = {
                     img: photoURL,
                     userid: uid,

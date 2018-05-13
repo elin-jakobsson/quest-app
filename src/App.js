@@ -5,12 +5,9 @@ import Profile from './components/profile/profile'
 import Questions from './components/questions/questions'
 import Categories from './components/categories/categories.js';
 import Login from './components/login/login';
-import QuestStart from './components/queststart/queststart.js';
-import QuestBar from './components/questbar/questbar.js';
 import Menu from './components/menu/menu.js';
-import CountScore from './components/countscore/countscore.js';
 import Statistic from './components/statistic/statistic.js';
-
+import QuestStart from './components/queststart/queststart.js';
 
 var config = {
    apiKey: "AIzaSyAP1ELuVASv1aMYuXvbQk8N5B-fjIzNWP4",
@@ -36,7 +33,7 @@ class App extends Component {
       allQuests : "",
       allUsers: "",
       firebaseIsLoaded: false,
-      scoreOfPlayers: [],
+      isPlayerReady : false
     }
   }
 
@@ -62,13 +59,6 @@ class App extends Component {
     if(typeof userObj === "object"){
       this.setState({currentUser : userObj})
     }
-  }
-
-
-  updateScoreOfPlayers = (scoreOfPlayers) => {
-    console.log("funkar");
-    this.setState({ scoreOfPlayers })
-
   }
 
   componentDidMount(){
@@ -128,6 +118,11 @@ class App extends Component {
   chooseCategori = (item) => {
     this.setState({selectedCategori : item})
   }
+
+  updatePlayerReady = (isReady) => {
+    this.setState( { isPlayerReady: isReady })
+  }
+
   render() {
     let user,userinfo;
     if(typeof this.state.currentUser === "object"){
@@ -137,19 +132,58 @@ class App extends Component {
     //   userinfo = this.state.allUsers;
     // }
 
+    let showComponents;
+    switch(this.state.currentPage) {
+      case "Spel" :
+        if ( this.state.selectedCategori === "" ) {
+          showComponents = ( <Categories selectedCategori = { this.chooseCategori}  />)
+        } else {
+          if( !this.state.isPlayerReady ){
+            showComponents = ( <QuestStart updatePlayerReady={ this.updatePlayerReady }/> )
+          } else {
+            showComponents = (
+              <Questions
+                db={db}
+                firebaseIsLoaded={this.state.firebaseIsLoaded}
+                allGames={this.state.allGames}
+                allQuests={this.state.allQuests}
+              />
+            )
+          }
+        }
+        break;
+
+      case "HighScore" :
+        showComponents = (
+          <Statistic
+            games ={ this.state.allGames }
+            users= { this.state.allUsers }
+            firebaseReady = { this.state.firebaseIsLoaded }
+          />
+        )
+        break;
+
+      case "Profile" :
+        showComponents = (<Profile userinfo = {user} alterProfile = {this.state.currentPage}
+          allGames={this.state.allGames} allUsers={this.state.allUsers}/>)
+        break;
+      default :
+        showComponents = "Fail to load components"
+
+
+    }
+
+
     return (
       <div className="App">
-        <Profile userinfo = {user} alterProfile = {this.state.currentPage}
-          allGames={this.state.allGames} allUsers={this.state.allUsers}/>
-        <Login firebase={firebase} updateUser={this.getUserInfo} db={db} users={ this.state.allUsers} firebaseReady={this.state.firebaseIsLoaded}/>
-        <Questions allGames={this.state.allGames} allQuests={this.state.allQuests}/>
-        <Categories selectedCategori={this.chooseCategori} />
-        <QuestStart />
-        <QuestBar />
-        <Menu changePage={this.changePage} currentPage={this.state.currentPage}/>
-        <CountScore />
-        <Statistic games ={ this.state.allGames } users= { this.state.allUsers } firebaseReady = { this.state.firebaseIsLoaded }  updateScoreOfPlayers = { this.updateScoreOfPlayers }/>
+        { showComponents }
 
+        <Login firebase={firebase} updateUser={this.getUserInfo}/>
+        <Menu
+          changePage={this.changePage}
+          currentPage={this.state.currentPage}
+          updatePlayerReady={ this.updatePlayerReady }
+        />
       </div>
     );
   }

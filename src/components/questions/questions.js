@@ -1,91 +1,157 @@
 import React, { Component } from 'react';
 import './questions.css';
 import SingleQuest from './singlequest';
-
-// vad jag ska göra
-/*
-  Lägg till fler fråger på firebase HTML, CSS och JS
-  ta emot en lista
-  shuffla listan och ta ut 10 random frågor.
-
-
-  jag får hela listan av games från app.js
-  jag får hela listan av questions från app.js
-
-  if sats -- har användaren ett pågående spel inom denna kategori, if true, hämta den redan existerande questtion list från games.
-
-
-  lägg till två nys state
-  allgames
-  allquestions
-
-  skickas senare till question komponenten singlequest
-
-
-
-  ska vi ha en kategori i firebase för activa games och en för avslutade???
-
-  har vi en kategori för activa games kan jag bara kolla finns det ett game med användarens id som är activt
-  och hämta den spellistan som sparats där.
-
-  och de som vill kollla högsta poängen på allaför high scores, kan göra det
-  kan man inte kolla i användrens information om vem som har högsta poäng.
-
-
-  loopa igenom obejct ta bort question, id, rightanswer osv.
-*/
-
+import Timer from '../timer/timer'
+import CountScore from '../countscore/countscore.js';
+import QuestBar from '../questbar/questbar.js';
+/* push ett till firebase med rätt info
+  */
 
 class Questions extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeGame:false,
-      qurrentQuestion: 0
+      currentGame: '',
+      allQuest: '',
+      timeIsOut : false,
+      liveUpdateCurrentGame: "",
+      resultMessage: ''
+
     }
   }
 
-// den orginella spelistan, existerande gamelista, categori, användar ID
-isGameActive = (questList, gameList, item, user)=>{
-
-  for(let obj in gameList){
-    if (gameList[obj].category === item) {
-      if (gameList[obj].userid === user) {
-          if (gameList[obj].completed === false) {
-            return gameList[obj];
-          }else {
-            this.fetchCategori(questList,item)
-          }
-      }else {
-        this.fetchCategori(questList,item)
+createNewGame = (allQuest, item, userId)=> {
+  let newPostKey = this.props.db.ref('games/').child('posts').push().key;
+  // console.log(allQuest);
+  // console.log(item);
+  // console.log(userId);
+  let gameObj = {
+    questList:{
+      0: {
+        answer: 'x',
+        questKey: allQuest[0].id
+      },
+      1: {
+        answer: 'x',
+        questKey: allQuest[1].id
+      },
+      2: {
+        answer: 'x',
+        questKey: allQuest[2].id
+      },
+      3: {
+        answer: 'x',
+        questKey: allQuest[3].id
+      },
+      4: {
+        answer: 'x',
+        questKey: allQuest[4].id
+      },
+      5: {
+        answer: 'x',
+        questKey: allQuest[5].id
+      },
+      6: {
+        answer: 'x',
+        questKey: allQuest[6].id
+      },
+      7: {
+        answer: 'x',
+        questKey: allQuest[7].id
+      },
+      8: {
+        answer: 'x',
+        questKey: allQuest[8].id
+      },
+      9: {
+        answer: 'x',
+        questKey: allQuest[9].id
       }
+    },
+    category :item,
+    gameid : newPostKey,
+    completed:false,
+    score: 0,
+    userid: userId
+  }
+
+  this.props.db.ref(`games/${newPostKey}`).set(gameObj);
+  console.log('new game',gameObj);
+  return gameObj;
+} // createNewGame
+
+
+isGameActive = (questList, gameList, item, user)=>{
+  let gamesArray = [];
+  for(let game in gameList){
+    if(gameList[game].userid === user){
+    gamesArray.push(gameList[game]);
     }
   }
-}
 
-liftActiveGame = (object)=>{
-  // vad behöver de andra komponenterna veta
+  let currentGame = gamesArray.filter( game => game.category === item && game.completed === false)
 
-}
+  console.log('current',currentGame.length);
 
-updateQuestion = ()=>{
-  this.setState({qurrentQuestion: this.state.qurrentQuestion +1});
+  if (currentGame.length > 0) {
+     console.log(currentGame);
+     return currentGame[0];
+  }else {
+    let newQuestList = this.fetchCategori(questList,item);
+    let newgame = this.createNewGame(newQuestList, item, user)
+    return newgame;
+  }
+} // isGameActive
+
+updateQuestion = (rightAnswer)=>{
+  console.log("Funkar!!");
+  let game = this.state.currentGame;
+  let gameid = game.gameid;
+  let questList = game.questList;
+  let questNo = 0;
+  while(questList[questNo].answer !== "x"){  //letar rätt på första frågan som inte besvarats
+    questNo++
+    if(questNo > 9){ break; }
+  }
+
+  let rightMessages = ['Grattis, det var RÄTT', 'Supper bra', 'Hackerman :)', 'Awesome Gitman', '!false :)', 'Master of everything', 'The queen/king of code', 'TRUE', 'Great!!', 'You are awesome']
+  let wrongMessages = ['Tyvärr fel','Du behöver plugga :)', "Inte en chans", "Sover du?","Kom igen nu bättre kan du!","Fel","Noo","Wrong","Bigg fail","Vad ska David (lärare) säga nu?","Nope","!true :(","Bigg noo","Whaaat!!?","FALSE","nääää!!","Bra försök"]
+
+  let posRight = Math.floor(Math.random() * rightMessages.length);
+  let posWrong = Math.floor(Math.random() * wrongMessages.length);
+
+  let evaluateAnswer;
+  let msg;
+  if (rightAnswer) {
+    evaluateAnswer = 1
+    msg = rightMessages[posRight];
+  }else {
+    evaluateAnswer = 0
+    msg = wrongMessages[posWrong];
+  }
+
+  console.log(evaluateAnswer);
+
+
+  this.setState({resultMessage: msg,
+                  timeIsOut: true });
+
+  this.props.db.ref(`games/${gameid}/questList/${questNo}/answer`).set(evaluateAnswer); //uppdaterar databasen
+
+
 }
 
 fetchCategori = (questList,item)=>{
   let array = [];
-
   for(let obj in questList){
-    // console.log(questList[obj]);
+    //console.log(questList[obj]);
     if (questList[obj].category === item) {
       array.push(questList[obj]);
     }
   }
-
   array = this.shuffleArray(array);
   return array
 } // fetchCategori
-
 
 shuffleArray=(array)=>{
   let currentIndex = array.length, temporaryValue, randomIndex;
@@ -103,16 +169,59 @@ shuffleArray=(array)=>{
   return array;
 } // Shuffle()
 
+
+timesUp = (timerFinished) => {
+   if (timerFinished) {
+       this.setState({timeIsOut : true}, () => {
+         console.log("Changequest status : " + this.state.timeIsOut);
+       })
+   }
+}
+
+componentDidMount(){
+  let allQuests = {...this.props.allQuests};
+  let allGames = {...this.props.allGames};
+
+  let item = 'css';
+  let userId = 'elinkey';
+  let gameObj = this.isGameActive(allQuests,allGames,item, userId); // ett spel retuneras och väljs ut. Om det inte finns ett pågående skapas ett nytt inuti funktionen.
+
+  this.setState({currentGame: gameObj})
+  this.props.db.ref(`games/${gameObj.gameid}`).on('value',this.liveUpdateGame); //startar en lyssnare i databasen på games.. som vi kan använda
+}
+
+liveUpdateGame = (snap) =>{
+  let data = snap.val();
+  this.setState({ liveUpdateCurrentGame : data })
+  console.log("uppdatering från databseen: ", data);
+}
+
+componentWillUnmount(){
+  this.props.db.ref('games/').off('value',this.liveUpdateGame);
+}
+
+changeQuest = () => {
+  console.log("funkar! nu kan användaren välja att byta till nästa fråga :)");
+  // uppdatear state current game med ny live data
+  // starta även timern
+  let gameObj = this.state.liveUpdateCurrentGame;
+  this.setState({
+    currentGame: gameObj,
+    timeIsOut : false
+  })
+
+}
+
   render() {
 
-  let questionArray = this.fetchCategori(this.props.allQuests,'css');
-    console.log(questionArray);
 
-    return (
-      <div>
-        <SingleQuest activeGame={this.state.activeGame} updateQuestion={this.updateQuestion} questionArray={questionArray} qurrentQuestion={this.state.qurrentQuestion}/>
-      </div>
-    );
+
+    return (<div>
+                <CountScore />
+                { !this.state.timeIsOut ? <Timer startValue={10} timeBool={false} timesUp={this.timesUp} /> : <p>{this.state.resultMessage}</p>}
+                { this.state.currentGame !=="" ? <SingleQuest db={this.props.db} changeQuest={this.changeQuest} timeIsOut={this.state.timeIsOut} updateQuestion={this.updateQuestion} allQuests={ this.props.allQuests } currentGame={this.state.currentGame} /> : "" }
+                <QuestBar />
+            </div>);
   }
 }
 

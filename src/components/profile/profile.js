@@ -50,7 +50,10 @@ class Profile extends Component {
     }
 
     editInfo = () => {
+      if(this.state.isEditable === false)
       this.setState({isEditable : true})
+      else
+      this.setState({isEditable : false})
     }
 
     handleChange = (e) =>{
