@@ -112,7 +112,7 @@ createNewGame = (allQuest, item, userId)=> {
 isGameActive = (questList, gameList, item, user)=>{
   let gamesArray = [];
   for(let game in gameList){
-    if(gameList[game].userid === user){
+    if(gameList[game].uid === user){
     gamesArray.push(gameList[game]);
     }
   }
