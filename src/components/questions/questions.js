@@ -4,6 +4,8 @@ import SingleQuest from './singlequest';
 import Timer from '../timer/timer'
 import CountScore from '../countscore/countscore.js';
 import QuestBar from '../questbar/questbar.js';
+import QuestEnd from '../questend/questend.js';
+
 /* push ett till firebase med rätt info
   */
 
@@ -19,6 +21,8 @@ class Questions extends Component {
       resultMessage: '',
       trueOrFalseColor: 'trueColor',
       listOfAnswer: [],
+      score: 0,
+      endOfGame : false
     }
   }
 
@@ -280,9 +284,11 @@ timesUp = (timerFinished) => {
 
 changeQuest = (endOfQuest) => {
   // uppdatear state current game med ny live data
-  // starta även timern
+  // starta även timern#a4a1df
   if(endOfQuest){
     console.log("inga fler frågor!");
+    this.setState({endOfGame : true})
+
   }else{
     let gameObj = this.state.liveUpdateCurrentGame;
     this.setState({
@@ -293,21 +299,26 @@ changeQuest = (endOfQuest) => {
   }
 }
 setScoreOfGame = (score,saveToFirbase) => {
-  //this.setState({score})
+  //
   let gameid = this.state.currentGame.gameid;
   if(saveToFirbase){
+    this.setState({score})
     this.props.db.ref(`games/${gameid}/score/`).set(score);
   }
 }
 
   render() {
 
-    return (<div className='container-questions'>
-                <CountScore listOfAnswer= { this.state.listOfAnswer } setScoreOfGame={ this.setScoreOfGame }/>
-                { !this.state.timeIsOut ? <Timer startValue={10} timeBool={false} timesUp={this.timesUp} /> : <p className={this.state.trueOrFalseColor}>{this.state.resultMessage}</p>}
-                { this.state.currentGame !=="" ? <SingleQuest answerstate={this.state.answerstate} changeQuest={this.changeQuest} timeIsOut={this.state.timeIsOut} updateQuestion={this.updateQuestion} allQuests={ this.props.allQuests } currentGame={this.state.currentGame} /> : "" }
-                <div className='questbar'><QuestBar listOfAnswer = { this.state.listOfAnswer }/></div>
-            </div>);
+    if (this.state.endOfGame) {
+      return (<div> <QuestEnd score={this.state.score}  game={this.state.liveUpdateCurrentGame} chooseCategori = { this.props.chooseCategori }/></div> )
+    } else {
+      return (<div className='container-questions'>
+                  <CountScore listOfAnswer= { this.state.listOfAnswer } setScoreOfGame={ this.setScoreOfGame }/>
+                  { !this.state.timeIsOut ? <Timer startValue={10} timeBool={false} timesUp={this.timesUp} /> : <p className={this.state.trueOrFalseColor}>{this.state.resultMessage}</p>}
+                  { this.state.currentGame !=="" ? <SingleQuest answerstate={this.state.answerstate} changeQuest={this.changeQuest} timeIsOut={this.state.timeIsOut} updateQuestion={this.updateQuestion} allQuests={ this.props.allQuests } currentGame={this.state.currentGame} /> : "" }
+                  <div className='questbar'><QuestBar listOfAnswer = { this.state.listOfAnswer }/></div>
+              </div>);
+    }
   }
 }
 

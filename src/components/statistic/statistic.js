@@ -84,7 +84,7 @@ class Statistic extends React.Component{
     let scoreOfPlayers = []; // lista med alla spelares resultat
     for(let user in users){
       user = users[user]
-      let userGameList = gamesArray.filter( item => item.userid === user.uid) // filtererar alla games för användaren
+      let userGameList = gamesArray.filter( item => item.uid === user.uid) // filtererar alla games för användaren
       let result = this.calculateScores(userGameList, user);
       scoreOfPlayers.push(result);
     }

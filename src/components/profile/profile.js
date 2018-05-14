@@ -22,8 +22,13 @@ class Profile extends Component {
     calculateScores = (arrayGames, user) => {
         let listOfGames = [];
         for (let game in arrayGames) {
-            listOfGames.push(game);
+          if(arrayGames[game].uid === user.uid){
+              listOfGames.push(arrayGames[game]);
+          }
         }
+        console.log(listOfGames);
+
+
         let newUserStat = {
             cssTotal: 0,
             cssHigh: 0,
@@ -36,6 +41,7 @@ class Profile extends Component {
         }
 
         let calc = (category, score) => {
+          console.log(score);
             newUserStat[category + "Total"] += score
             if (newUserStat[category + "High"] < score) {
                 newUserStat[category + "High"] = score;
@@ -44,9 +50,9 @@ class Profile extends Component {
         }
 
         listOfGames.forEach(item => {
-            calc(item.catagory, item.score);
+            calc(item.category, item.score);
         })
-
+        console.log(newUserStat);
         return newUserStat;
     }
 
@@ -126,7 +132,7 @@ class Profile extends Component {
                     <div className="profilePage-imgcontainer">
                         <img alt="" src={userObj.img}/></div>
                     <div>
-                        <p>{this.state.inputData}</p>
+                        <p className="p-style">{this.state.inputData}</p>
                     </div>
                 </div>)
             }
@@ -196,7 +202,7 @@ class Profile extends Component {
                         <h3>{this.state.inputData}</h3>
                     </div>
                     <div>
-                        <p>Poäng :</p>
+                        <p>Score : {gameValues.totalScore}</p>
                     </div>
                 </div>
                 <div className="btn-container">
@@ -207,7 +213,7 @@ class Profile extends Component {
     }
 
     render() {
-        return (this.alterProfile(this.props.currentPage, this.props.user, this.calculateScores(), this.props.allUsers));
+        return (this.alterProfile(this.props.currentPage, this.props.user, this.calculateScores(this.props.allGames,this.props.user), this.props.allUsers));
     }
 }
 

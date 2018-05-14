@@ -148,6 +148,7 @@ class App extends Component {
                 allGames={this.state.allGames}
                 allQuests={this.state.allQuests}
                 currentUser={ this.state.currentUser }
+                chooseCategori = { this.chooseCategori }
               />
             )
           }
@@ -173,10 +174,9 @@ class App extends Component {
 
     }
 
-
     return (
       <div className="App">
-        {this.state.currentUser ? <Profile  currentPage = {this.state.currentPage}
+        {this.state.currentUser && this.state.allGames ? <Profile  currentPage = {this.state.currentPage}
           allGames={this.state.allGames} allUsers={this.state.allUsers} user={this.state.currentUser} firebase={firebase} db={db}/> : "" }
 
         { showComponents }
