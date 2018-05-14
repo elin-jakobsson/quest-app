@@ -25,8 +25,9 @@ class Questions extends Component {
 componentDidMount(){
   let allQuests = {...this.props.allQuests};
   let allGames = {...this.props.allGames};
-  let item = 'css';
+  let item = this.props.selectedCategori;
   let userId = this.props.currentUser.uid;
+
   let gameObj = this.isGameActive(allQuests,allGames,item, userId); // ett spel retuneras och väljs ut. Om det inte finns ett pågående skapas ett nytt inuti funktionen.
 
   this.setState({ currentGame: gameObj }, () => { // sätter nuvarnade game och därefter sätts nuvarnade score
@@ -52,6 +53,7 @@ liveUpdateGame = (snap) =>{
 
 createNewGame = (allQuest, item, userId)=> {
   let newPostKey = this.props.db.ref('games/').child('posts').push().key;
+  console.log('allQuest ',allQuest);
   let gameObj = {
     questList:{
       0: {
@@ -99,7 +101,7 @@ createNewGame = (allQuest, item, userId)=> {
     gameid : newPostKey,
     completed:false,
     score: 0,
-    userid: userId
+    uid: userId
   }
 
   this.props.db.ref(`games/${newPostKey}`).set(gameObj);

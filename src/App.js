@@ -130,7 +130,7 @@ class App extends Component {
   }
 
   render() {
-    
+
     let showComponents;
     switch(this.state.currentPage) {
       case "Spel" :
@@ -143,6 +143,7 @@ class App extends Component {
             showComponents = (
               <Questions
                 db={db}
+                selectedCategori={this.state.selectedCategori}
                 firebaseIsLoaded={this.state.firebaseIsLoaded}
                 allGames={this.state.allGames}
                 allQuests={this.state.allQuests}

@@ -10,7 +10,7 @@
   align-items: center;
   background-color: #223F55;
   flex: 1 1;
-  max-width: 90%;
+  max-width: 450px;
   height: 100%;
   width: 90%;
   margin: 10px auto;
@@ -39,5 +39,23 @@
   height: 50px;
   background-color: #FFC216;
   border-radius: 5px;
+  border: none;
+  color: #232323;
   font-size: 1.3em;
+
+  -webkit-transition: 0.5s;
+  -moz-transition: 0.5s;
+  -ms-transition: 0.5s;
+  -o-transition: 0.5s;
+  transition: 0.5s;
+}
+
+.container-queststart .wrapper button:hover{
+    background-color: orange;
+
+  -webkit-transition: 0.5s;
+  -moz-transition: 0.5s;
+  -ms-transition: 0.5s;
+  -o-transition: 0.5s;
+  transition: 0.5s;
 }
