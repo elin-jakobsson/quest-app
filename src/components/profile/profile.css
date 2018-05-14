@@ -60,11 +60,19 @@
   flex-direction: column;
   padding: 25px;
 }
-
+.p-style{
+  width: 200px;
+  text-align: center;
+  font-size: 1.1rem;
+}
 .profile-header input{
 background-color: inherit;
 border-style: none;
 outline: none;
+color:#16CAB0;
+width: 200px;
+text-align: center;
+font-size: 1.1rem;
 border-bottom: 1.5px solid #FFC216;
 }
 
