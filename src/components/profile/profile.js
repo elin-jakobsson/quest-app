@@ -41,7 +41,6 @@ class Profile extends Component {
         }
 
         let calc = (category, score) => {
-          console.log(score);
             newUserStat[category + "Total"] += score
             if (newUserStat[category + "High"] < score) {
                 newUserStat[category + "High"] = score;
@@ -78,6 +77,7 @@ class Profile extends Component {
     handleClickLogout = event => {
         let firebase = this.props.firebase;
         firebase.auth().signOut().then(() => {
+          this.props.setCurrentUser("");
             console.log("User logged out");
             // Sign-out successful.
         }).catch(function(error) {
