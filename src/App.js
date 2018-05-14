@@ -130,7 +130,7 @@ class App extends Component {
   }
 
   render() {
-
+    
     let showComponents;
     switch(this.state.currentPage) {
       case "Spel" :

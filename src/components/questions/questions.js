@@ -14,8 +14,10 @@ class Questions extends Component {
       currentGame: '',
       allQuest: '',
       timeIsOut : false,
+      autoWrong: false,
       liveUpdateCurrentGame: "",
       resultMessage: '',
+      trueOrFalseColor: 'trueColor',
       listOfAnswer: [],
     }
   }
@@ -24,7 +26,7 @@ componentDidMount(){
   let allQuests = {...this.props.allQuests};
   let allGames = {...this.props.allGames};
   let item = 'css';
-  let userId = this.props.currentUser.userid;
+  let userId = this.props.currentUser.uid;
   let gameObj = this.isGameActive(allQuests,allGames,item, userId); // ett spel retuneras och väljs ut. Om det inte finns ett pågående skapas ett nytt inuti funktionen.
 
   this.setState({ currentGame: gameObj }, () => { // sätter nuvarnade game och därefter sätts nuvarnade score
@@ -129,6 +131,7 @@ updateQuestion = (rightAnswer)=>{
   let game = this.state.currentGame;
   let gameid = game.gameid;
   let questList = game.questList;
+  console.log('questList ', questList);
   let questNo = 0;
   let endOfQuest = false;
   let limitOfQuests = 9
@@ -149,12 +152,15 @@ updateQuestion = (rightAnswer)=>{
 
   let evaluateAnswer;
   let msg;
+  let answerColor;
   if (rightAnswer) {
     evaluateAnswer = 1
     msg = rightMessages[posRight];
+    answerColor = 'trueColor';
   }else {
     evaluateAnswer = 0
     msg = wrongMessages[posWrong];
+    answerColor = 'falseColor';
   }
 
 
@@ -165,6 +171,7 @@ updateQuestion = (rightAnswer)=>{
 
   this.setState({
     resultMessage: msg,
+    trueOrFalseColor: answerColor,
     timeIsOut: true,
     listOfAnswer
   });
@@ -173,7 +180,7 @@ updateQuestion = (rightAnswer)=>{
   }
   this.props.db.ref(`games/${gameid}/questList/${questNo}/answer`).set(evaluateAnswer); //uppdaterar databasen
 
-}
+} // updateQuestion
 
 countPlayerScore = (evaluateAnswer) => {
   let bonusLevel = 2;
@@ -217,7 +224,7 @@ countPlayerScore = (evaluateAnswer) => {
     }
   });
   return listOfAnswer
-}
+} // countPlayerScore
 
 
 fetchCategori = (questList,item)=>{
@@ -252,6 +259,7 @@ shuffleArray=(array)=>{
 timesUp = (timerFinished) => {
    if (timerFinished) {
        this.setState({timeIsOut : true}, () => {
+         this.updateQuestion(false);
          console.log("Changequest status : " + this.state.timeIsOut);
        })
    }
@@ -281,11 +289,11 @@ setScoreOfGame = (score,saveToFirbase) => {
 
   render() {
 
-    return (<div>
+    return (<div className='container-questions'>
                 <CountScore listOfAnswer= { this.state.listOfAnswer } setScoreOfGame={ this.setScoreOfGame }/>
-                { !this.state.timeIsOut ? <Timer startValue={10} timeBool={false} timesUp={this.timesUp} /> : <p>{this.state.resultMessage}</p>}
+                { !this.state.timeIsOut ? <Timer startValue={10} timeBool={false} timesUp={this.timesUp} /> : <p className={this.state.trueOrFalseColor}>{this.state.resultMessage}</p>}
                 { this.state.currentGame !=="" ? <SingleQuest changeQuest={this.changeQuest} timeIsOut={this.state.timeIsOut} updateQuestion={this.updateQuestion} allQuests={ this.props.allQuests } currentGame={this.state.currentGame} /> : "" }
-                <QuestBar listOfAnswer = { this.state.listOfAnswer }/>
+                <div className='questbar'><QuestBar listOfAnswer = { this.state.listOfAnswer }/></div>
             </div>);
   }
 }
