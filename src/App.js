@@ -148,6 +148,7 @@ class App extends Component {
                 allGames={this.state.allGames}
                 allQuests={this.state.allQuests}
                 currentUser={ this.state.currentUser }
+                chooseCategori = { this.chooseCategori }
               />
             )
           }
