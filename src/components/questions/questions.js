@@ -14,7 +14,7 @@ class Questions extends Component {
       currentGame: '',
       allQuest: '',
       timeIsOut : false,
-      autoWrong: false,
+      answerstate: "",
       liveUpdateCurrentGame: "",
       resultMessage: '',
       trueOrFalseColor: 'trueColor',
@@ -40,7 +40,8 @@ componentDidMount(){
 }
 
 componentWillUnmount(){
-  this.props.db.ref('games/').off('value',this.liveUpdateGame);
+  this.props.db.ref(`games/${this.state.currentGame.gameid}`).off('value',this.liveUpdateGame); // måste vara samma sökväg för att unsubscribe lyssnaren
+  // console.log('in cansel subscription ', this.state.currentGame.gameid);
 }
 
 liveUpdateGame = (snap) =>{
@@ -119,9 +120,14 @@ isGameActive = (questList, gameList, item, user)=>{
 
   let currentGame = gamesArray.filter( game => game.category === item && game.completed === false)
 
+  console.log(currentGame.length);
+  console.log('currentGame ',currentGame);
+
   if (currentGame.length > 0) {
+    console.log('GAME EXIST');
     return currentGame[0];
   }else {
+    console.log('CREATE NEW GAME');
     let newQuestList = this.fetchCategori(questList,item);
     console.log('the new questLIst when a game is created ', newQuestList); // uppstod error här om man inte får en list, kan uppstå vid dåligt intenet
     let newgame = this.createNewGame(newQuestList, item, user)
@@ -155,14 +161,17 @@ updateQuestion = (rightAnswer)=>{
   let evaluateAnswer;
   let msg;
   let answerColor;
+  let answerstate;
   if (rightAnswer) {
     evaluateAnswer = 1
     msg = rightMessages[posRight];
     answerColor = 'trueColor';
+    answerstate=true;
   }else {
     evaluateAnswer = 0
     msg = wrongMessages[posWrong];
     answerColor = 'falseColor';
+    answerstate = false;
   }
 
 
@@ -173,6 +182,7 @@ updateQuestion = (rightAnswer)=>{
 
   this.setState({
     resultMessage: msg,
+    answerstate: answerstate,
     trueOrFalseColor: answerColor,
     timeIsOut: true,
     listOfAnswer
@@ -277,7 +287,8 @@ changeQuest = (endOfQuest) => {
     let gameObj = this.state.liveUpdateCurrentGame;
     this.setState({
       currentGame: gameObj,
-      timeIsOut : false
+      timeIsOut : false,
+      answerstate:""
     })
   }
 }
@@ -294,7 +305,7 @@ setScoreOfGame = (score,saveToFirbase) => {
     return (<div className='container-questions'>
                 <CountScore listOfAnswer= { this.state.listOfAnswer } setScoreOfGame={ this.setScoreOfGame }/>
                 { !this.state.timeIsOut ? <Timer startValue={10} timeBool={false} timesUp={this.timesUp} /> : <p className={this.state.trueOrFalseColor}>{this.state.resultMessage}</p>}
-                { this.state.currentGame !=="" ? <SingleQuest changeQuest={this.changeQuest} timeIsOut={this.state.timeIsOut} updateQuestion={this.updateQuestion} allQuests={ this.props.allQuests } currentGame={this.state.currentGame} /> : "" }
+                { this.state.currentGame !=="" ? <SingleQuest answerstate={this.state.answerstate} changeQuest={this.changeQuest} timeIsOut={this.state.timeIsOut} updateQuestion={this.updateQuestion} allQuests={ this.props.allQuests } currentGame={this.state.currentGame} /> : "" }
                 <div className='questbar'><QuestBar listOfAnswer = { this.state.listOfAnswer }/></div>
             </div>);
   }

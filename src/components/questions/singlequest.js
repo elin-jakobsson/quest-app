@@ -14,12 +14,7 @@ class SingleQuest extends Component {
     this.state={
 
     }
-  } // constructor()
-
-
-  componentDidMount(){
-
-  }
+  } // constructor
 
 
   handleClick = (index,rightanswer) => {
@@ -33,15 +28,7 @@ class SingleQuest extends Component {
       console.log('wrong');
       console.log('det rätta svaret är ',rightanswer);
     }
-    // console.log("funkar!!");
-    // console.log('index', index);
-
-    // om vi hinner att svara innnan tiden har gått ut och svaret är rätt så ska true skickas upp till Questions
-    // om tiden gått ut eller om användaren svarade fel så ska vi skicka upp false
-    // this.props.update(true eller false);
-    //här ska vi kolla om svaret som användaren angett är ok.
-    //därefter spara ner till firebase och fortsätta med nästa fråga.
-  }
+  } // handleClick
 
   getchooices = (singelQuest)=>{
     let answerList = ["a","b","c","d"];
@@ -56,7 +43,15 @@ class SingleQuest extends Component {
       list.push(singelQuest.d);
     }
 
-    let inputElements = list.map((item,index)=> (<li className='neutralLi' onClick={()=>this.handleClick(index,singelQuest.rightanswer)} key={"key"+index}> { answerList[index] }. { item } </li>));
+    let inputElements;
+    if (this.props.answerstate ==="") {
+      inputElements = list.map((item,index)=> (<li className='neutralLi' onClick={()=>this.handleClick(index,singelQuest.rightanswer)} key={"key"+index}> { answerList[index] }. { item } </li>));
+
+    }else {
+      inputElements = list.map((item,index)=> (<li className='neutralLi' key={"key"+index}> { answerList[index] }. { item } </li>));
+
+    }
+
     return inputElements;
     // retunera en klickbar lista med svarsalternativ
   } // getchooices
@@ -103,7 +98,7 @@ class SingleQuest extends Component {
     let nextButton;
     if (obj.questionsLeft > 1) {
       let endOfQuest = false;
-      //console.log(obj.questionsLeft);
+
       nextButton = (<button className='nextButton' onClick={ ()=> this.props.changeQuest(endOfQuest) }>Nästa </button>)
     } else {
       let endOfQuest = true;
