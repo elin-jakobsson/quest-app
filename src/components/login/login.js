@@ -32,11 +32,9 @@ class Login extends Component {
 
             for (let user in users) {
                 if (users[user].authid === authid) {
-                    userId = users[user];
+                    userId = user;
                     userName = users[user].name;
                     userExist = true;
-                } else {
-                    userId = newPostKey;
                 }
             }
             if (!userExist) {
