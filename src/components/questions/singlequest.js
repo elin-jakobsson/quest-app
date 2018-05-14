@@ -56,10 +56,10 @@ class SingleQuest extends Component {
       list.push(singelQuest.d);
     }
 
-    let inputElements = list.map((item,index)=> (<li onClick={()=>this.handleClick(index,singelQuest.rightanswer)} key={"key"+index}> { answerList[index] }. { item } </li>));
+    let inputElements = list.map((item,index)=> (<li className='neutralLi' onClick={()=>this.handleClick(index,singelQuest.rightanswer)} key={"key"+index}> { answerList[index] }. { item } </li>));
     return inputElements;
     // retunera en klickbar lista med svarsalternativ
-  }
+  } // getchooices
 
   getQuest = () => {
 
@@ -104,20 +104,20 @@ class SingleQuest extends Component {
     if (obj.questionsLeft > 1) {
       let endOfQuest = false;
       //console.log(obj.questionsLeft);
-      nextButton = (<button onClick={ ()=> this.props.changeQuest(endOfQuest) }>Nästa </button>)
+      nextButton = (<button className='nextButton' onClick={ ()=> this.props.changeQuest(endOfQuest) }>Nästa </button>)
     } else {
       let endOfQuest = true;
-      nextButton= (<button onClick={ () => this.props.changeQuest(endOfQuest) }>Fortsätt </button>)
+      nextButton= (<button className='continueButton' onClick={ () => this.props.changeQuest(endOfQuest) }>Avsluta </button>)
     }
 
-    return (<div>
-              <h4>{obj.singleQuest.question}</h4>
+    return (<div className='singelQuest-container'>
+              <h4 className='theQuetion'>{obj.singleQuest.question}</h4>
               <div>
                 <ul>
                 { chooices }
                 </ul>
               </div>
-              { nextButton }
+              <div className='nextButton-container'>{ nextButton }</div>
           </div>);
 
   }// Render()
