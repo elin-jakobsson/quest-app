@@ -1,0 +1,58 @@
+.container-questions {
+  /* padding: 1rem; */
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container-questions, .container-questions * {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.container-questions .trueColor {
+  color: springgreen;
+}
+
+.container-questions .falseColor {
+  color: red;
+}
+
+.singelQuest-container {
+  width: 80%;
+}
+
+.container-questions .theQuetion {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container-questions .neutralLi {
+  padding: 1rem;
+  margin: 0.5rem;
+  border-bottom: 1px solid rgba(22, 201, 176, 0.5);
+}
+
+.container-questions>.questbar {
+  width: 100%;
+  margin-top: 2rem;
+}
+
+.container-questions .nextButton-container {
+  width: 100%;
+  margin: 3rem 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.container-questions .nextButton {
+  background-color: #FFC216;
+  padding: 0.5rem 2rem;
+  border-radius: 5px;
+  border: none;
+}

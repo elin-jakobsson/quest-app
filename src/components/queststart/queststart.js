@@ -6,10 +6,12 @@ const QuestStart = props =>{
 
   this.handleStartGame=()=>{
     console.log("skicka upp ett värde till parent!!");
+    props.updatePlayerReady(true);
   }
   return(
     <div className="component container-queststart">
       <div className="wrapper">
+        <div className='goBackToCategoris'><p onClick={()=>props.chooseCategori("")}>&times;</p></div>
         <div className="box">Js</div>
         <div>Javascript Quests</div>
         <span>Redo!</span>

@@ -7,9 +7,23 @@
   flex: 1;
   text-align: center;
   background-color: #2F648B;
+  min-height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
 }
 
 .container-statistic li:hover {
   cursor: pointer;
+  filter: brightness(120%);
+}
+
+
+.container-statistic h3{
+  margin: 60px 0px 15px 8%;
+}
+
+.container-statistic ul .selected{
   filter: brightness(120%);
 }

@@ -5,9 +5,9 @@ body {
   box-sizing: border-box;
   background-color: #181135;
   color: white;
-  min-height: 3000px;
+  height: 100vh;
 }
 
 .component{
-  border: 2px solid red;
+  /* border: 2px solid red; */
 }

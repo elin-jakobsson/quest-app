@@ -7,44 +7,39 @@ class Statistic extends React.Component{
   constructor(props){
     super(props);
     this.state = {
-      selectedStatistic : "hihgestScore",
+      selectedStatistic : "Resultat Topp-Bott",
       scoreOfPlayers : "",
       isLoading: true,
       wantToUpdate : true
     }
   }
 
-  componentDidUpdate(){
+  componentDidMount(){
+      console.log("funkar");
     if(this.props.firebaseReady){ // om firebase är redo
+
       if(this.state.wantToUpdate){ // om vi vill updatera komponenten.
         let scoreOfPlayers = this.getHihgestScore();
-        this.props.updateScoreOfPlayers(scoreOfPlayers); // skickar upp det
         this.setState({wantToUpdate: false, scoreOfPlayers})
       }
-    }
-
-    if(!this.props.firebaseReady && this.state.wantToUpdate === false){  // firebase har satts false.. nu vill vi uppdatera komponenten igen.
-      this.setState({wantToUpdate: true})
     }
   }
 
   handleClick = (item) => {
-    console.log("hejsan", item);
-    this.getHihgestScore();
-    this.setState({selectedStatistic : item })
+    this.getHihgestScore(); // uppdaterar statestik
+    this.setState({selectedStatistic : item }) // ändrar vilken typ av statestik som ska visas.
 
   }
 
   populateMenu = () => {
-    let list = ["HihgestScore", "HighestScoreByCategory"];
+    let list = ["Resultat Topp-Bott", "Resultat Bott-Topp"];
     let newLiList = list.map( item => {
       return (
-        <li onClick={ () => this.handleClick(item) } key={ item }> { item } </li>
+        <li className={this.state.selectedStatistic === item ? "selected" : "" } onClick={ () => this.handleClick(item) } key={ item }> { item } </li>
       )
     })
     return (<ul> { newLiList } </ul>)
   }
-
 
   calculateScores = (arrayGames, user) => {
     let newUserStat = {
@@ -61,21 +56,21 @@ class Statistic extends React.Component{
     let calc = (category, score) =>{
       newUserStat[category+"Total"] += score
       if(newUserStat[category+"High"] < score ){
-        newUserStat[category+"High"] = score;
-      }
+         newUserStat[category+"High"] = score;
+       }
       newUserStat.totalScore += score
     }
 
     arrayGames.forEach(item => {
-      calc(item.catagory,item.score);
+      calc(item.category,item.score);
     })
 
     return newUserStat;
   }
 
   getHihgestScore = () => {
-    // Går igenom alla användare och plockar ut alla spel den gjort. Pushar resultatet till en lista som vi sedan skickar upp till app för att använda i profil och statestik
-
+    // Går igenom alla användare och plockar ut alla spel den gjort.
+    // Pushar resultatet till en lista som vi sedan skickar upp till app för att använda i profil och statestik
     let gamesObj = {...this.props.games};
     let gamesArray = [];
 
@@ -89,42 +84,29 @@ class Statistic extends React.Component{
     let scoreOfPlayers = []; // lista med alla spelares resultat
     for(let user in users){
       user = users[user]
-      let userGameList = gamesArray.filter( item => item.userid === user.uid) // filtererar alla games för användaren
+      let userGameList = gamesArray.filter( item => item.uid === user.uid) // filtererar alla games för användaren
       let result = this.calculateScores(userGameList, user);
       scoreOfPlayers.push(result);
     }
 
     return scoreOfPlayers;
-
   }
 
-
-
   render(){
-
     let menu = this.populateMenu();
 
-    let data;
-    if(this.state.selectedStatistic === "HihgestScore"){
-      data = "hihgscore"
-    }else {
-      data = "not hihgestScore"
-    }
-
-    let showStat = ""
-    if(this.state.scoreOfPlayers){
-      showStat = <StatisticView scoreOfPlayers={ this.state.scoreOfPlayers } />
-    } else {
-      showStat = "Statestic saknas"
-    }
     return(
       <div className="component container-statistic">
-        Här är statistica
         { menu }
-        { data }
-        { showStat }
+        <h3>TOTAL</h3>
+        {(this.state.scoreOfPlayers) ?  (<StatisticView scoreOfPlayers={ this.state.scoreOfPlayers } typeOfSort = { this.state.selectedStatistic } list = "total"      />) : "Loading!!"  }
+        <h3>CSS</h3>
+        {(this.state.scoreOfPlayers) ?  (<StatisticView scoreOfPlayers={ this.state.scoreOfPlayers } typeOfSort = { this.state.selectedStatistic } list = "css"        />) : "Loading!!"  }
+        <h3>JAVASCRIPT</h3>
+        {(this.state.scoreOfPlayers) ?  (<StatisticView scoreOfPlayers={ this.state.scoreOfPlayers } typeOfSort = { this.state.selectedStatistic } list = "javascript" />) : "Loading!!"  }
+        <h3>HTML</h3>
+        {(this.state.scoreOfPlayers) ?  (<StatisticView scoreOfPlayers={ this.state.scoreOfPlayers } typeOfSort = { this.state.selectedStatistic } list = "html"       />) : "Loading!!"  }
       </div>
-
     );
   }
 }
