@@ -25,6 +25,7 @@ class Login extends Component {
         let currentUser = {};
         let newUser = {};
         let userId = "";
+        let userName = "";
         // let User = {};
         let newPostKey = db.ref('users/').child('posts').push().key;
         if (authid !== undefined) {
@@ -32,6 +33,7 @@ class Login extends Component {
             for (let user in users) {
                 if (users[user].authid === authid) {
                     userId = users[user];
+                    userName = users[user].name;
                     userExist = true;
                 } else {
                     userId = newPostKey;
@@ -49,12 +51,11 @@ class Login extends Component {
         }
         if (userId !== undefined && authid !== undefined) {
             currentUser = {
-                name:userId.name,
+                name: userName,
                 img,
                 uid: userId,
                 authid: authid
             }
-            console
             return currentUser;
         }
 
@@ -75,7 +76,6 @@ class Login extends Component {
                 // var isAnonymous = user.isAnonymous;
                 // var providerData = user.providerData;
                 // this.checkUserOnDb(users);
-
                 this.props.updateUser(this.checkUserOnDb(users, uid, photoURL, displayName));
                 this.props.changePage("Spel");
             } else {

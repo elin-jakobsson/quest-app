@@ -176,17 +176,17 @@ class App extends Component {
     return (
       <div className="App">
         {this.state.currentUser ? <Profile  currentPage = {this.state.currentPage}
-          allGames={this.state.allGames} allUsers={this.state.allUsers} user={this.state.currentUser} db={db}/> : "" }
+          allGames={this.state.allGames} allUsers={this.state.allUsers} user={this.state.currentUser} firebase={firebase} db={db}/> : "" }
 
         { showComponents }
 
         <Login changePage={this.changePage} firebase={firebase} updateUser={this.getUserInfo} firebaseReady = { this.state.firebaseIsLoaded }
            users = { this.state.allUsers  } db  = {db}/>
-        <Menu
+         {this.state.currentUser ? <Menu
           changePage={this.changePage}
           currentPage={this.state.currentPage}
           updatePlayerReady={ this.updatePlayerReady }
-        />
+        /> : ""}
       </div>
     );
   }

@@ -7,7 +7,7 @@ class Profile extends Component {
         this.state = {
             isLoading: true,
             isEditable: false,
-            inputData:this.props.user.name
+            inputData: this.props.user.name
         }
     }
     componentDidUpdate() {
@@ -62,15 +62,26 @@ class Profile extends Component {
     }
 
     compareInputWithDb = (newName, name, uid) => {
-        if (this.state.inputData !== "" || this.state.inputData === "name") {
+
+        if (this.state.inputData !== "" || this.state.inputData === name) {
             let db = this.props.db;
             db.ref(`users/${uid}/name`).set(newName);
         }
     }
 
+    handleClickLogout = event => {
+        let firebase = this.props.firebase;
+        firebase.auth().signOut().then(() => {
+            console.log("User logged out");
+            // Sign-out successful.
+        }).catch(function(error) {
+            console.log("Logged out failed");
+            // An error happened.
+        });
+    }
+
     alterProfile = (menuOption, currentUser, gameValues, listOfUsers) => {
         let userObj = {};
-        console.log(menuOption);
 
         if (typeof currentUser === "object" && typeof listOfUsers === "object") {
             for (let user in listOfUsers) {
@@ -79,6 +90,7 @@ class Profile extends Component {
                     let img = listOfUsers[user].img;
                     let name = listOfUsers[user].name;
                     let uid = listOfUsers[user].uid
+
                     userObj = {
                         img,
                         name,
@@ -86,7 +98,6 @@ class Profile extends Component {
                     }
                 }
             }
-            // this.setState({inputData : user.name})
         }
         let editconditions = () => {
             if (this.state.isEditable) {
@@ -189,7 +200,7 @@ class Profile extends Component {
                     </div>
                 </div>
                 <div className="btn-container">
-                    <button>Logout</button>
+                    <button onClick={this.handleClickLogout}>Logout</button>
                 </div>
             </div>)
         }
