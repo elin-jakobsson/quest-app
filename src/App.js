@@ -169,7 +169,7 @@ class App extends Component {
         showComponents = ""
         break;
       default :
-        showComponents = "Fail to load components"
+        showComponents = ""
 
 
     }

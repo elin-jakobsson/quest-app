@@ -7,7 +7,7 @@ class Statistic extends React.Component{
   constructor(props){
     super(props);
     this.state = {
-      selectedStatistic : "Resultat Topp-Bott",
+      selectedStatistic : "Highest Scores",
       scoreOfPlayers : "",
       isLoading: true,
       wantToUpdate : true
@@ -32,7 +32,7 @@ class Statistic extends React.Component{
   }
 
   populateMenu = () => {
-    let list = ["Resultat Topp-Bott", "Resultat Bott-Topp"];
+    let list = ["Highest Scores", "Lowest Scores"];
     let newLiList = list.map( item => {
       return (
         <li className={this.state.selectedStatistic === item ? "selected" : "" } onClick={ () => this.handleClick(item) } key={ item }> { item } </li>

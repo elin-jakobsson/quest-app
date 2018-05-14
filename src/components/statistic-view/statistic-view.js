@@ -17,7 +17,7 @@ class StatisticView extends React.Component{
     }
 
 
-    if(this.props.typeOfSort === "Resultat Topp-Bott"){
+    if(this.props.typeOfSort === "Highest Scores"){
       scoreOfPlayers.sort((a,b)=>{
         return b[category] - a[category];
       })
