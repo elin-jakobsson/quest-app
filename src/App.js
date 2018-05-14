@@ -128,6 +128,9 @@ class App extends Component {
   updatePlayerReady = (isReady) => {
     this.setState( { isPlayerReady: isReady })
   }
+  updateCurrentUser = (status) =>{
+    this.setState({currentUser : status})
+  }
 
   render() {
 
@@ -177,7 +180,7 @@ class App extends Component {
     return (
       <div className="App">
         {this.state.currentUser && this.state.allGames ? <Profile  currentPage = {this.state.currentPage}
-          allGames={this.state.allGames} allUsers={this.state.allUsers} user={this.state.currentUser} firebase={firebase} db={db}/> : "" }
+          allGames={this.state.allGames} allUsers={this.state.allUsers} user={this.state.currentUser} firebase={firebase} db={db} setCurrentUser = {this.updateCurrentUser}/> : "" }
 
         { showComponents }
 
