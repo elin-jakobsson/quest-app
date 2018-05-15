@@ -1,6 +1,7 @@
 import React from 'react';
 import './categories.css'
 
+
 export default class Categories extends React.Component{
 
   changeCategori = (item) => {
@@ -51,7 +52,11 @@ export default class Categories extends React.Component{
 
     return(
         <div className="component container-categories">
-          { categoriesList }
+          <div>
+            { categoriesList }
+          </div>
+
+
         </div>
     ); // return end
   }; // render end

@@ -1,0 +1,115 @@
+.container-questions {
+  /* padding: 1rem; */
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 10px;
+}
+
+.container-questions, .container-questions * {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.container-questions .trueColor {
+  color: springgreen;
+}
+
+.container-questions .falseColor {
+  color: red;
+}
+
+.singelQuest-container {
+  display: flex;
+  height: 80vh;
+  width: 90%;
+  flex-direction: column;
+}
+.container-questions .singelQuest-container h4 {
+  text-align: center;
+}
+
+.container-questions .theQuetion {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container-questions .score {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  margin-right: 10%;
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+.container-questions .timerAndMsgBox {
+  margin-bottom: 1rem;
+  font-size: 1.2em;
+}
+
+
+.container-questions .neutralLi {
+  padding: 1rem;
+  margin: 0.5rem;
+  border-bottom: 1px solid rgba(22, 201, 176, 0.5);
+}
+
+.container-questions .neutralLi span {
+  display: inline-block;
+  padding: 10px;
+  width: 98%;
+  border-radius: 2px;
+}
+
+.container-questions .rightLi {
+  border: 2px solid green;
+}
+
+.container-questions .rightAnswerLi {
+  background-color: #187994;
+}
+
+.container-questions .wrongAnswerLi {
+  background-color: #B44756;
+}
+
+
+.container-questions>.questbar {
+  width: 100%;
+  position: absolute;
+  bottom: 55px;
+}
+
+.container-questions .nextButton-container {
+  width: 100%;
+  margin: 3rem 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.container-questions .nextButton {
+  background-color: #FFC216;
+  padding: 0.5rem 2rem;
+  border-radius: 5px;
+  border: none;
+}
+
+.container-questions .continueButton {
+  background-color: #FFC216;
+  padding: 0.5rem 2rem;
+  border-radius: 5px;
+  border: none;
+}
+
+.container-questions .fullyCorrect{
+  background-color: springgreen;
+}
+
+.container-questions .notCorrect{
+  border: 3px solid springgreen;
+}

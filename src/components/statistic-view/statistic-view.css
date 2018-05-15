@@ -1,0 +1,38 @@
+.container-statisticView {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+
+}
+.container-statisticView ul{
+  width: 95%;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 70px;
+}
+.container-statisticView li{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 50px;
+  flex: 1 100%;
+  margin: 1px;
+}
+.container-statisticView li div{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+
+}
+
+.container-statisticView li div:first-child{
+  flex: 1;
+  text-align: center;
+}
+.container-statisticView li div:nth-child(2){
+  flex: 2;
+}
+.container-statisticView li div:nth-child(3){
+  flex: 2;
+}

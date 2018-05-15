@@ -1,16 +1,55 @@
 import React from 'react';
 import './statistic-view.css';
 
+
 class StatisticView extends React.Component{
+
+  sortView = (scoreOfPlayers) => {
+    let category;
+    if(this.props.list==="css"){
+      category = "cssTotal"
+    } else if (this.props.list==="html") {
+      category = "htmlTotal"
+    }else if (this.props.list === "javascript") {
+      category = "javascriptTotal"
+    }else{
+      category = "totalScore"
+    }
+
+
+    if(this.props.typeOfSort === "Highest Scores"){
+      scoreOfPlayers.sort((a,b)=>{
+        return b[category] - a[category];
+      })
+
+    } else {
+      scoreOfPlayers.sort((a,b)=>{
+        return a[category] - b[category];
+      })
+    }
+
+
+    let showInfo = scoreOfPlayers.map( (item,index) =>{
+      return (
+        <li key={item.user.uid}>
+          <div> {index+1} </div>
+          <div> {item.user.name}</div> <div> {item[category]} </div>
+        </li>
+      )
+    })
+    return (<ul> { showInfo } </ul>)
+  }
+
+
 
   render(){
     let scoreOfPlayers = [...this.props.scoreOfPlayers]
-    let showInfo = scoreOfPlayers.map(item=>{
-      return ( <div key={item.user.uid}> {item.user.name} {item.totalScore} </div>)
-    })
+    let showInfo = this.sortView(scoreOfPlayers);
 
     return(
-      <div>{ showInfo } </div>
+      <div className="component container-statisticView">
+        { showInfo }
+      </div>
     )
   }
 }
