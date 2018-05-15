@@ -9,6 +9,16 @@
   height: 50px;
 }
 
+@media screen and (max-width: 500px){
+  .profile-container .btn-container button{
+    width: 80px;
+  }
+/*
+  .profile-container .btn-container{
+    flex: 1 1 auto;
+  } */
+}
+
 .img-container img {
   border-radius: 50%;
   width: 100%;
@@ -36,8 +46,8 @@
 .profile-container .btn-container button {
   background-color: #FFC216;
   border-radius: 5px;
-  font-size: 1.2rem;
-  width: 120px;
+  font-size: 1.1rem;
+  width: 100px;
   height: 35px;
   border-style: none;
 }
