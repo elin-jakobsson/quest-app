@@ -209,7 +209,7 @@ class Profile extends Component {
                     </div>
                 </div>
                 <div className="btn-container">
-                    <button onClick={this.handleClickLogout}>Logout</button>
+                    <button className="logOutBtn" onClick={this.handleClickLogout}>Logout</button>
                 </div>
             </div>)
         } else {
