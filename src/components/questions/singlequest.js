@@ -139,7 +139,7 @@ class SingleQuest extends Component {
                 { chooices }
                 </ul>
               </div>
-              <div className='nextButton-container'>{ nextButton }</div>
+              <div className='nextButton-container'>{(this.props.answerstate !== "")? nextButton : ""}</div>
           </div>);
 
   }// Render()
