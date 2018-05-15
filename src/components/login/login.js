@@ -38,6 +38,8 @@ class Login extends Component {
                 }
             }
             if (!userExist) {
+              userName = name;
+              userId = newPostKey;
                 newUser = {
                     name,
                     img,
@@ -68,6 +70,7 @@ class Login extends Component {
                 //let email = user.email;
                 let photoURL = user.photoURL;
                 let uid = user.uid;
+
                 if(!displayName){
                   displayName ="user";
                 }

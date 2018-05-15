@@ -1,0 +1,27 @@
+.questend-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  height: 70vh;
+}
+.questend-container div{
+  margin: 15px;
+}
+@media screen and (max-width:500px) {
+.questend-container h2{
+  font-size: 1.3rem;
+}
+}
+.questend-container p{
+  font-size: 1.1rem;
+}
+.questend-container button{
+  background-color: #FFC216;
+  border-radius: 5px;
+  font-size: 1.1rem;
+  width: 140px;
+  height: 45px;
+  border-style: none;
+}

@@ -146,9 +146,15 @@ cursor: pointer;
   height: 100%;
   max-width: 670px;
 }
+
 .highestScoreSection h3{
   color: #FFC216;
   margin-bottom: 12.5px;
+}
+@media screen and (max-width:500px){
+  .highestScoreSection .higestScoreContent h3{
+    font-size: 0.9rem;
+  }
 }
 .highestScoreSection p{
   margin-bottom: 12.5px;
