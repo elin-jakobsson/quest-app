@@ -67,12 +67,13 @@ class Login extends Component {
                 this.setState({loggedOrNot: true});
                 // User is signed in.
                 let displayName = user.displayName;
-                let email = user.email;
+                //let email = user.email;
                 let photoURL = user.photoURL;
                 let uid = user.uid;
 
-                console.log();
-
+                if(!displayName){
+                  displayName ="user";
+                }
                 // Checking database if user already exist
                 // var emailVerified = user.emailVerified;
                 // var isAnonymous = user.isAnonymous;
@@ -83,7 +84,7 @@ class Login extends Component {
             } else {
                 this.props.changePage("");
                 this.setState({loggedOrNot: false});
-                console.log("We have NO user");
+                //console.log("We have NO user");
                 // User is signed out.
                 // ...
             }

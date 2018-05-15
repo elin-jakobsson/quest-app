@@ -33,7 +33,7 @@ class StatisticView extends React.Component{
       return (
         <li key={item.user.uid}>
           <div> {index+1} </div>
-          <div> {item.user.name}</div> <div> Score:{item[category]} </div>
+          <div> {item.user.name}</div> <div> {item[category]} </div>
         </li>
       )
     })

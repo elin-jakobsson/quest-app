@@ -43,14 +43,13 @@ class App extends Component {
   addQuestToFirebase = () => {
     let newPostKey = db.ref('quests/').child('posts').push().key;
     let quest = {
-      a : "15",
-      b : "50",
-      c : "100",
-      d : "1000",
-      category : "css",
+      a : 'function myFunction()',
+      b : 'function:myFunction()',
+      c : 'function = myFunction()',
+      category : "js",
       id : newPostKey,
-      question : "Vad har inline-style för specificitetsvärde i CSS?",
-      rightanswer : "d"
+      question : "Hur skapar vi en funktion i javascript?",
+      rightanswer : "a"
     }
     db.ref(`quests/${newPostKey}`).set(quest);
   }
@@ -63,7 +62,7 @@ class App extends Component {
 
   componentDidMount(){
     this.getUserInfo();
-    // this.addQuestToFirebase();
+    //this.addQuestToFirebase();
     // call for firebase or ajax here
     //start all calls
     // kalla på db.ref () med en färdig funktion, referera till en existerande funktion.
@@ -81,11 +80,6 @@ class App extends Component {
   getDataFromFirebase = () => {  // med ett promise som ändrar status på firebaseIsLoaded när all data är hämtad från firebase
 
     let promiseOne = new Promise((resolve, reject)=>{
-      // db.ref('games/').once('value').then(snap=>{
-      //   let data = snap.val();
-      //   this.setState({ allGames : data })
-      //   resolve();
-      // })
 
       db.ref(`games/`).on('value', (snap)=>{ // live uppdatering
         let data = snap.val();
@@ -103,17 +97,22 @@ class App extends Component {
     })
 
     let promiseThree = new Promise((resolve, reject)=>{
-      db.ref('users/').once('value').then(snap=>{
+      // db.ref('users/').once('value').then(snap=>{
+      //   let data = snap.val();
+      //   this.setState({ allUsers : data })
+      //   resolve();
+      // })
+      db.ref(`users/`).on('value', (snap)=>{ // live uppdatering
         let data = snap.val();
         this.setState({ allUsers : data })
         resolve();
-      })
+      });
     })
 
 
     Promise.all([promiseOne,promiseTwo,promiseThree]).then( values =>{
       this.setState({firebaseIsLoaded: true})
-      console.log("firebase is loaded!! :)");
+      //console.log("firebase is loaded!! :)");
     })
   }
 

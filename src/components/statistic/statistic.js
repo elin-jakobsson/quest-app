@@ -15,7 +15,7 @@ class Statistic extends React.Component{
   }
 
   componentDidMount(){
-      console.log("funkar");
+      //console.log("funkar");
     if(this.props.firebaseReady){ // om firebase är redo
 
       if(this.state.wantToUpdate){ // om vi vill updatera komponenten.

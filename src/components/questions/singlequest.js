@@ -43,13 +43,13 @@ class SingleQuest extends Component {
     if(singelQuest.hasOwnProperty("d")){
       list.push(singelQuest.d);
     }
-    let objPropertys = Object.keys(singelQuest);
+    //let objPropertys = Object.keys(singelQuest);
 
 
     /*---Här är css classerna när de är neutrala tanken ät att deras värden ska ändras om
           svaret är true eller false och markera det rätta svaret*/
-    let displayTrueAnswer = 'neutralLi';
-    let falseAnswer = 'neutralLi';
+    //let displayTrueAnswer = 'neutralLi';
+    //let falseAnswer = 'neutralLi';
 
     let inputElements;
     if (this.props.answerstate ==="") {
