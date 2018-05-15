@@ -85,22 +85,17 @@ class Profile extends Component {
 
     alterProfile = (menuOption, currentUser, gameValues, listOfUsers, inGame) => {
         let userObj = {};
-
         if (typeof currentUser === "object" && typeof listOfUsers === "object") {
-            for (let user in listOfUsers) {
-                if (listOfUsers[user].authid === currentUser.authid) {
 
-                    let img = listOfUsers[user].img;
-                    let name = listOfUsers[user].name;
-                    let uid = listOfUsers[user].uid
+                    let img = currentUser.img;
+                    let name = currentUser.name;
+                    let uid = currentUser.uid;
 
                     userObj = {
                         img,
                         name,
                         uid
                     }
-                }
-            }
         }
         let editconditions = () => {
             let SaveAndEdit;
