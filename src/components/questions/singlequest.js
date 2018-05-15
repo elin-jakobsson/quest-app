@@ -21,19 +21,17 @@ class SingleQuest extends Component {
     let answerList = ["a","b","c","d"];
     if (answerList[index]===rightanswer && this.props.timeIsOut === false) {
       this.props.updateQuestion(true);
-      console.log('rätt!!');
+
     }else {
       this.props.updateQuestion(false);
 
-      console.log('wrong');
-      console.log('det rätta svaret är ',rightanswer);
     }
 
     this.setState({answerIndex:index}) // sätter vilket index av vad användaren svarat
   } // handleClick
 
   getchooices = (singelQuest)=>{
-    console.log('singelQuest ', singelQuest.rightanswer);
+
     let answerList = ["a","b","c","d"];
     let list = []
     list.push(singelQuest.a);
@@ -46,7 +44,7 @@ class SingleQuest extends Component {
       list.push(singelQuest.d);
     }
     let objPropertys = Object.keys(singelQuest);
-    console.log('objProp ', objPropertys);
+
 
     /*---Här är css classerna när de är neutrala tanken ät att deras värden ska ändras om
           svaret är true eller false och markera det rätta svaret*/
@@ -63,17 +61,14 @@ class SingleQuest extends Component {
         let selectClass = "";
 
         if(answerList[index] === singelQuest.rightanswer){
-          console.log("det rätta svaret är alternativ", index);
           selectClass = "rightLi"
         }
 
         if( this.state.answerIndex === index ){ //plockar ut det som användaren har gissat på
-            if(answerList[index]=== singelQuest.rightanswer){  // om det är rätt svar
-              console.log("rätt svar grön");
+            if(answerList[index]=== singelQuest.rightanswer){  // om användare svarade rätt
               selectClass = "rightAnswerLi"
-            }else{
+            }else{                                              // om användare svarade fel
               selectClass = "wrongAnswerLi"
-              console.log("fel svar röd");
             }
         }
 
@@ -115,6 +110,11 @@ class SingleQuest extends Component {
     //returner lista med val
   }
 
+  handleClickChangeQuest = (endOfQuest) => {
+    this.setState({answerIndex:""})
+    this.props.changeQuest(endOfQuest)
+  }
+
   render(){
     let obj = this.getQuest();
     if(!obj){
@@ -126,10 +126,10 @@ class SingleQuest extends Component {
     if (obj.questionsLeft > 1) {
       let endOfQuest = false;
 
-      nextButton = (<button className='nextButton' onClick={ ()=> this.props.changeQuest(endOfQuest) }>Nästa </button>)
+      nextButton = (<button className='nextButton' onClick={ ()=> this.handleClickChangeQuest(endOfQuest) }>Nästa </button>)
     } else {
       let endOfQuest = true;
-      nextButton= (<button className='continueButton' onClick={ () => this.props.changeQuest(endOfQuest) }>Avsluta </button>)
+      nextButton= (<button className='continueButton' onClick={ () => this.handleClickChangeQuest(endOfQuest) }>Avsluta </button>)
     }
 
     return (<div className='singelQuest-container'>
