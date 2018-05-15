@@ -12,7 +12,7 @@ class SingleQuest extends Component {
   constructor(props){
     super(props);
     this.state={
-
+      answerIndex : ""
     }
   } // constructor
 
@@ -21,16 +21,17 @@ class SingleQuest extends Component {
     let answerList = ["a","b","c","d"];
     if (answerList[index]===rightanswer && this.props.timeIsOut === false) {
       this.props.updateQuestion(true);
-      console.log('rätt!!');
+
     }else {
       this.props.updateQuestion(false);
 
-      console.log('wrong');
-      console.log('det rätta svaret är ',rightanswer);
     }
+
+    this.setState({answerIndex:index}) // sätter vilket index av vad användaren svarat
   } // handleClick
 
   getchooices = (singelQuest)=>{
+
     let answerList = ["a","b","c","d"];
     let list = []
     list.push(singelQuest.a);
@@ -42,13 +43,37 @@ class SingleQuest extends Component {
     if(singelQuest.hasOwnProperty("d")){
       list.push(singelQuest.d);
     }
+    let objPropertys = Object.keys(singelQuest);
+
+
+    /*---Här är css classerna när de är neutrala tanken ät att deras värden ska ändras om
+          svaret är true eller false och markera det rätta svaret*/
+    let displayTrueAnswer = 'neutralLi';
+    let falseAnswer = 'neutralLi';
 
     let inputElements;
     if (this.props.answerstate ==="") {
-      inputElements = list.map((item,index)=> (<li className='neutralLi' onClick={()=>this.handleClick(index,singelQuest.rightanswer)} key={"key"+index}> { answerList[index] }. { item } </li>));
+      inputElements = list.map((item,index)=> (<li className='neutralLi' onClick={()=>this.handleClick(index,singelQuest.rightanswer)} key={"key"+index}> <span> { answerList[index] }.  { item } </span> </li>));
 
     }else {
-      inputElements = list.map((item,index)=> (<li className='neutralLi' key={"key"+index}> { answerList[index] }. { item } </li>));
+
+      inputElements = list.map((item,index)=>{
+        let selectClass = "";
+
+        if(answerList[index] === singelQuest.rightanswer){
+          selectClass = "rightLi"
+        }
+
+        if( this.state.answerIndex === index ){ //plockar ut det som användaren har gissat på
+            if(answerList[index]=== singelQuest.rightanswer){  // om användare svarade rätt
+              selectClass = "rightAnswerLi"
+            }else{                                              // om användare svarade fel
+              selectClass = "wrongAnswerLi"
+            }
+        }
+
+        return (<li className="neutralLi"  key={"key"+index}> <span className = { selectClass }> { answerList[index] }. { item }</span> </li>);
+      });
 
     }
 
@@ -74,18 +99,20 @@ class SingleQuest extends Component {
       }
     }
 
-
-
     let questionsLeft = notAnsweredQuests.length;
-    //this.setState({questionsLeft});
 
     let questKey = notAnsweredQuests[0].questKey;
 
 
     let singleQuest = allQuests[questKey];
-    //console.log('single ',singleQuest);
+
     return  {singleQuest,questionsLeft}
     //returner lista med val
+  }
+
+  handleClickChangeQuest = (endOfQuest) => {
+    this.setState({answerIndex:""})
+    this.props.changeQuest(endOfQuest)
   }
 
   render(){
@@ -99,10 +126,10 @@ class SingleQuest extends Component {
     if (obj.questionsLeft > 1) {
       let endOfQuest = false;
 
-      nextButton = (<button className='nextButton' onClick={ ()=> this.props.changeQuest(endOfQuest) }>Nästa </button>)
+      nextButton = (<button className='nextButton' onClick={ ()=> this.handleClickChangeQuest(endOfQuest) }>Nästa </button>)
     } else {
       let endOfQuest = true;
-      nextButton= (<button className='continueButton' onClick={ () => this.props.changeQuest(endOfQuest) }>Avsluta </button>)
+      nextButton= (<button className='continueButton' onClick={ () => this.handleClickChangeQuest(endOfQuest) }>Avsluta </button>)
     }
 
     return (<div className='singelQuest-container'>
