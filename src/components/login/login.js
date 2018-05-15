@@ -65,16 +65,15 @@ class Login extends Component {
                 this.setState({loggedOrNot: true});
                 // User is signed in.
                 let displayName = user.displayName;
+                let email = user.email;
                 let photoURL = user.photoURL;
                 let uid = user.uid;
 
-                // let email = user.email;
+                // Checking database if user already exist
                 // var emailVerified = user.emailVerified;
                 // var isAnonymous = user.isAnonymous;
                 // var providerData = user.providerData;
                 // this.checkUserOnDb(users);
-                
-                // Checking database if user already exist
                 this.props.updateUser(this.checkUserOnDb(users, uid, photoURL, displayName));
                 this.props.changePage("Spel");
             } else {

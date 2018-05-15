@@ -1,4 +1,5 @@
 .container-login {
+  min-width: 320px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -8,8 +9,10 @@
 }
 
 .quest-logoContainer{
-  width: 200px;
-  height: 250px;
+  width: 100px;
+  margin-bottom: 2rem;
+  margin-top: 2rem;
+  /* height: 250px; */
 }
 
 .quest-logoContainer img{
@@ -93,4 +96,10 @@ button:nth-child(5) {
   background-color: rgb(59, 89, 152);
   color: white;
   margin-bottom: 20px;
+}
+
+@media screen and (min-width: 700px)  {
+  .quest-logoContainer{
+    width: 200px;
+  }
 }
