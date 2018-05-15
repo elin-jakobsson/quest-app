@@ -8,12 +8,15 @@ const QuestStart = props =>{
   if(props.selectedCategori==="html"){
     obj.category = "html";
     obj.colour = "#60AB25";
+    obj.text = "Frågor om HTML";
   }else if (props.selectedCategori==="css") {
     obj.category = "css";
     obj.colour = "#477AA4";
+    obj.text = "Frågor om CSS";
   } else {
     obj.category = "js";
     obj.colour = "#F7BF35";
+    obj.text = "Frågor om JAVASCRIPT"
   }
 
   console.log(obj);
@@ -26,7 +29,7 @@ const QuestStart = props =>{
       <div className="wrapper">
         <div className='goBackToCategoris'><p onClick={()=>props.chooseCategori("")}>&times;</p></div>
         <div className="box" style= {{backgroundColor : obj.colour}}>{ obj.category }</div>
-        <div>Javascript Quests</div>
+        <div> { obj.text } </div>
         <span>Redo!</span>
         <button onClick={this.handleStartGame}>Start</button>
       </div>
