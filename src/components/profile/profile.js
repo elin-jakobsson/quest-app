@@ -75,10 +75,10 @@ class Profile extends Component {
         let firebase = this.props.firebase;
         firebase.auth().signOut().then(() => {
             this.props.setCurrentUser("");
-            console.log("User logged out");
+            //console.log("User logged out");
             // Sign-out successful.
         }).catch(function(error) {
-            console.log("Logged out failed");
+            //console.log("Logged out failed");
             // An error happened.
         });
     }

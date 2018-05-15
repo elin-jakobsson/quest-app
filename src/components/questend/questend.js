@@ -5,7 +5,7 @@ export default class QuestEnd extends React.Component {
 
 
   render(){
-    console.log(this.props);
+    //console.log(this.props);
     return (
       <div>
         <div>Grattis ditt spel avslutat</div>

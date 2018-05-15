@@ -56,7 +56,7 @@ liveUpdateGame = (snap) =>{
 
 createNewGame = (allQuest, item, userId)=> {
   let newPostKey = this.props.db.ref('games/').child('posts').push().key;
-  console.log('allQuest ',allQuest);
+  //console.log('allQuest ',allQuest);
   let gameObj = {
     questList:{
       0: {
@@ -121,16 +121,16 @@ isGameActive = (questList, gameList, item, user)=>{
 
   let currentGame = gamesArray.filter( game => game.category === item && game.completed === false)
 
-  console.log(currentGame.length);
-  console.log('currentGame ',currentGame);
+  //console.log(currentGame.length);
+  //console.log('currentGame ',currentGame);
 
   if (currentGame.length > 0) {
-    console.log('GAME EXIST');
+    //console.log('GAME EXIST');
     return currentGame[0];
   }else {
-    console.log('CREATE NEW GAME');
+    //console.log('CREATE NEW GAME');
     let newQuestList = this.fetchCategori(questList,item);
-    console.log('the new questLIst when a game is created ', newQuestList); // uppstod error här om man inte får en list, kan uppstå vid dåligt intenet
+    //console.log('the new questLIst when a game is created ', newQuestList); // uppstod error här om man inte får en list, kan uppstå vid dåligt intenet
     let newgame = this.createNewGame(newQuestList, item, user)
     return newgame;
   }
@@ -140,7 +140,7 @@ updateQuestion = (rightAnswer)=>{
   let game = this.state.currentGame;
   let gameid = game.gameid;
   let questList = game.questList;
-  console.log('questList ', questList);
+  //console.log('questList ', questList);
   let questNo = 0;
   let endOfQuest = false;
   let limitOfQuests = 9
@@ -271,7 +271,6 @@ timesUp = (timerFinished) => {
    if (timerFinished) {
        this.setState({timeIsOut : true}, () => {
          this.updateQuestion(false);
-         console.log("Changequest status : " + this.state.timeIsOut);
        })
    }
 }
@@ -280,7 +279,7 @@ changeQuest = (endOfQuest) => {
   // uppdatear state current game med ny live data
   // starta även timern#a4a1df
   if(endOfQuest){
-    console.log("inga fler frågor!");
+    //console.log("inga fler frågor!");
     this.setState({endOfGame : true})
 
   }else{
@@ -311,7 +310,9 @@ setScoreOfGame = (score,saveToFirbase) => {
                   <div className="score">
                     <CountScore listOfAnswer= { this.state.listOfAnswer } setScoreOfGame={ this.setScoreOfGame }/>
                   </div>
-                  { !this.state.timeIsOut ? <Timer startValue={10} timeBool={false} timesUp={this.timesUp} /> : <p className={this.state.trueOrFalseColor}>{this.state.resultMessage}</p>}
+                  <div className="timerAndMsgBox">
+                    { !this.state.timeIsOut ? <Timer startValue={10} timeBool={false} timesUp={this.timesUp} /> : <p className={this.state.trueOrFalseColor}>{this.state.resultMessage}</p>}
+                  </div>
                   { this.state.currentGame !=="" ? <SingleQuest answerstate={this.state.answerstate} changeQuest={this.changeQuest} timeIsOut={this.state.timeIsOut} updateQuestion={this.updateQuestion} allQuests={ this.props.allQuests } currentGame={this.state.currentGame} /> : "" }
                   <div className='questbar'><QuestBar listOfAnswer = { this.state.listOfAnswer }/></div>
               </div>);

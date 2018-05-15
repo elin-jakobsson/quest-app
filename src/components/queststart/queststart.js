@@ -19,7 +19,7 @@ const QuestStart = props =>{
     obj.text = "Frågor om JAVASCRIPT"
   }
 
-  console.log(obj);
+  //console.log(obj);
   this.handleStartGame=()=>{
     props.updatePlayerReady(true);
   }
