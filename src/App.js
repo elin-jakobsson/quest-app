@@ -141,7 +141,7 @@ class App extends Component {
           showComponents = ( <Categories selectedCategori = { this.chooseCategori}  />)
         } else {
           if( !this.state.isPlayerReady ){
-            showComponents = ( <QuestStart chooseCategori={ this.chooseCategori } updatePlayerReady={ this.updatePlayerReady }/> )
+            showComponents = ( <QuestStart chooseCategori={ this.chooseCategori } selectedCategori = { this.state.selectedCategori } updatePlayerReady={ this.updatePlayerReady }/> )
           } else {
             showComponents = (
               <Questions

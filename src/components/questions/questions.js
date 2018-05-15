@@ -157,7 +157,7 @@ updateQuestion = (rightAnswer)=>{
   }
 
   let rightMessages = ['Grattis, det var RÄTT', 'Supper bra', 'Hackerman :)', 'Awesome Gitman', '!false :)', 'Master of everything', 'The queen/king of code', 'TRUE', 'Great!!', 'You are awesome']
-  let wrongMessages = ['Tyvärr fel','Du behöver plugga :)', "Inte en chans", "Sover du?","Kom igen nu bättre kan du!","Fel","Noo","Wrong","Bigg fail","Vad ska David (lärare) säga nu?","Nope","!true :(","Bigg noo","Whaaat!!?","FALSE","nääää!!","Bra försök"]
+  let wrongMessages = ['Tyvärr fel','Du behöver plugga :)', "Inte en chans", "Sover du?","Kom igen nu bättre kan du!","Fel","Noo","Wrong","Big fail","Vad ska David (lärare) säga nu?","Nope","!true :(","Big noo","Whaaat!!?","FALSE","nääää!!","Bra försök"]
 
   let posRight = Math.floor(Math.random() * rightMessages.length);
   let posWrong = Math.floor(Math.random() * wrongMessages.length);
