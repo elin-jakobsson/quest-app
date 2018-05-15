@@ -12,7 +12,7 @@ class SingleQuest extends Component {
   constructor(props){
     super(props);
     this.state={
-
+      answerIndex : ""
     }
   } // constructor
 
@@ -28,6 +28,8 @@ class SingleQuest extends Component {
       console.log('wrong');
       console.log('det rätta svaret är ',rightanswer);
     }
+
+    this.setState({answerIndex:index}) // sätter vilket index av vad användaren svarat
   } // handleClick
 
   getchooices = (singelQuest)=>{
@@ -45,10 +47,30 @@ class SingleQuest extends Component {
 
     let inputElements;
     if (this.props.answerstate ==="") {
-      inputElements = list.map((item,index)=> (<li className='neutralLi' onClick={()=>this.handleClick(index,singelQuest.rightanswer)} key={"key"+index}> { answerList[index] }. { item } </li>));
+      inputElements = list.map((item,index)=> (<li className='neutralLi' onClick={()=>this.handleClick(index,singelQuest.rightanswer)} key={"key"+index}> <span> { answerList[index] }.  { item } </span> </li>));
 
     }else {
-      inputElements = list.map((item,index)=> (<li className='neutralLi' key={"key"+index}> { answerList[index] }. { item } </li>));
+
+      inputElements = list.map((item,index)=>{
+        let selectClass = "";
+
+        if(answerList[index] === singelQuest.rightanswer){
+          console.log("det rätta svaret är alternativ", index);
+          selectClass = "rightLi"
+        }
+
+        if( this.state.answerIndex === index ){ //plockar ut det som användaren har gissat på
+            if(answerList[index]=== singelQuest.rightanswer){  // om det är rätt svar
+              console.log("rätt svar grön");
+              selectClass = "rightAnswerLi"
+            }else{
+              selectClass = "wrongAnswerLi"
+              console.log("fel svar röd");
+            }
+        }
+
+        return (<li className="neutralLi"  key={"key"+index}> <span className = { selectClass }> { answerList[index] }. { item }</span> </li>);
+      });
 
     }
 

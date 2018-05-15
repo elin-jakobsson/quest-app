@@ -54,8 +54,6 @@ liveUpdateGame = (snap) =>{
   //console.log("uppdatering från databseen: ", data);
 }
 
-
-
 createNewGame = (allQuest, item, userId)=> {
   let newPostKey = this.props.db.ref('games/').child('posts').push().key;
   console.log('allQuest ',allQuest);
@@ -112,7 +110,6 @@ createNewGame = (allQuest, item, userId)=> {
   this.props.db.ref(`games/${newPostKey}`).set(gameObj);
   return gameObj;
 } // createNewGame
-
 
 isGameActive = (questList, gameList, item, user)=>{
   let gamesArray = [];
@@ -242,7 +239,6 @@ countPlayerScore = (evaluateAnswer) => {
   return listOfAnswer
 } // countPlayerScore
 
-
 fetchCategori = (questList,item)=>{
   let array = [];
   for(let obj in questList){
@@ -271,7 +267,6 @@ shuffleArray=(array)=>{
   return array;
 } // Shuffle()
 
-
 timesUp = (timerFinished) => {
    if (timerFinished) {
        this.setState({timeIsOut : true}, () => {
@@ -280,7 +275,6 @@ timesUp = (timerFinished) => {
        })
    }
 }
-
 
 changeQuest = (endOfQuest) => {
   // uppdatear state current game med ny live data
@@ -298,6 +292,7 @@ changeQuest = (endOfQuest) => {
     })
   }
 }
+
 setScoreOfGame = (score,saveToFirbase) => {
   //
   let gameid = this.state.currentGame.gameid;
@@ -313,7 +308,9 @@ setScoreOfGame = (score,saveToFirbase) => {
       return (<div> <QuestEnd score={this.state.score}  game={this.state.liveUpdateCurrentGame} chooseCategori = { this.props.chooseCategori }/></div> )
     } else {
       return (<div className='container-questions'>
-                  <CountScore listOfAnswer= { this.state.listOfAnswer } setScoreOfGame={ this.setScoreOfGame }/>
+                  <div className="score">
+                    <CountScore listOfAnswer= { this.state.listOfAnswer } setScoreOfGame={ this.setScoreOfGame }/>
+                  </div>
                   { !this.state.timeIsOut ? <Timer startValue={10} timeBool={false} timesUp={this.timesUp} /> : <p className={this.state.trueOrFalseColor}>{this.state.resultMessage}</p>}
                   { this.state.currentGame !=="" ? <SingleQuest answerstate={this.state.answerstate} changeQuest={this.changeQuest} timeIsOut={this.state.timeIsOut} updateQuestion={this.updateQuestion} allQuests={ this.props.allQuests } currentGame={this.state.currentGame} /> : "" }
                   <div className='questbar'><QuestBar listOfAnswer = { this.state.listOfAnswer }/></div>
