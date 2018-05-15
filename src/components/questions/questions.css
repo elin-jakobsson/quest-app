@@ -85,3 +85,11 @@
   border-radius: 5px;
   border: none;
 }
+
+.container-questions .fullyCorrect{
+  background-color: springgreen;
+}
+
+.container-questions .notCorrect{
+  border: 3px solid springgreen;
+}

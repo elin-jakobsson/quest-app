@@ -33,6 +33,7 @@ class SingleQuest extends Component {
   } // handleClick
 
   getchooices = (singelQuest)=>{
+    console.log('singelQuest ', singelQuest.rightanswer);
     let answerList = ["a","b","c","d"];
     let list = []
     list.push(singelQuest.a);
@@ -44,6 +45,13 @@ class SingleQuest extends Component {
     if(singelQuest.hasOwnProperty("d")){
       list.push(singelQuest.d);
     }
+    let objPropertys = Object.keys(singelQuest);
+    console.log('objProp ', objPropertys);
+
+    /*---Här är css classerna när de är neutrala tanken ät att deras värden ska ändras om
+          svaret är true eller false och markera det rätta svaret*/
+    let displayTrueAnswer = 'neutralLi';
+    let falseAnswer = 'neutralLi';
 
     let inputElements;
     if (this.props.answerstate ==="") {
@@ -96,16 +104,13 @@ class SingleQuest extends Component {
       }
     }
 
-
-
     let questionsLeft = notAnsweredQuests.length;
-    //this.setState({questionsLeft});
 
     let questKey = notAnsweredQuests[0].questKey;
 
 
     let singleQuest = allQuests[questKey];
-    //console.log('single ',singleQuest);
+
     return  {singleQuest,questionsLeft}
     //returner lista med val
   }
