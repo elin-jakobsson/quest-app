@@ -22,12 +22,10 @@ class Profile extends Component {
     calculateScores = (arrayGames, user) => {
         let listOfGames = [];
         for (let game in arrayGames) {
-          if(arrayGames[game].uid === user.uid){
-              listOfGames.push(arrayGames[game]);
-          }
+            if (arrayGames[game].uid === user.uid) {
+                listOfGames.push(arrayGames[game]);
+            }
         }
-        console.log(listOfGames);
-
 
         let newUserStat = {
             cssTotal: 0,
@@ -51,7 +49,6 @@ class Profile extends Component {
         listOfGames.forEach(item => {
             calc(item.category, item.score);
         })
-        console.log(newUserStat);
         return newUserStat;
     }
 
@@ -77,7 +74,7 @@ class Profile extends Component {
     handleClickLogout = event => {
         let firebase = this.props.firebase;
         firebase.auth().signOut().then(() => {
-          this.props.setCurrentUser("");
+            this.props.setCurrentUser("");
             console.log("User logged out");
             // Sign-out successful.
         }).catch(function(error) {
@@ -86,7 +83,7 @@ class Profile extends Component {
         });
     }
 
-    alterProfile = (menuOption, currentUser, gameValues, listOfUsers) => {
+    alterProfile = (menuOption, currentUser, gameValues, listOfUsers, inGame) => {
         let userObj = {};
 
         if (typeof currentUser === "object" && typeof listOfUsers === "object") {
@@ -106,10 +103,12 @@ class Profile extends Component {
             }
         }
         let editconditions = () => {
+            let SaveAndEdit;
             if (this.state.isEditable) {
+                SaveAndEdit = "Save";
                 return (<div className="profile-header">
                     <div className="editUserInfo">
-                        <p onClick={this.editInfo}>Edit</p>
+                        <p onClick={this.editInfo}>{SaveAndEdit}</p>
                         <div><img onClick={this.editInfo} alt="" src="img/edit-icon.png"/></div>
                     </div>
                     <div className="profilePage-imgcontainer">
@@ -122,6 +121,7 @@ class Profile extends Component {
                 </div>)
             } else {
                 if (!this.state.isEditable) {
+                    SaveAndEdit = "Edit";
                     this.compareInputWithDb(this.state.inputData, userObj.name, userObj.uid)
                 }
                 return (<div className="profile-header">
@@ -194,9 +194,12 @@ class Profile extends Component {
                     </div>
                 </div>
             </div>)
-        } else {
+        }
+        if (!inGame && inGame !== undefined) {
             return (<div className='component profile-container'>
-                <div className="img-container"><img alt="" src={userObj.img}/></div>
+                <div className="img-Section">
+                    <div className="img-container"><img alt="" src={userObj.img}/></div>
+                </div>
                 <div className="userInfo-container">
                     <div>
                         <h3>{this.state.inputData}</h3>
@@ -209,11 +212,13 @@ class Profile extends Component {
                     <button onClick={this.handleClickLogout}>Logout</button>
                 </div>
             </div>)
+        } else {
+            return (<div></div>)
         }
     }
 
     render() {
-        return (this.alterProfile(this.props.currentPage, this.props.user, this.calculateScores(this.props.allGames,this.props.user), this.props.allUsers));
+        return (this.alterProfile(this.props.currentPage, this.props.user, this.calculateScores(this.props.allGames, this.props.user), this.props.allUsers, this.props.playerReady));
     }
 }
 

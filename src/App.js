@@ -180,7 +180,8 @@ class App extends Component {
     return (
       <div className="App">
         {this.state.currentUser && this.state.allGames ? <Profile  currentPage = {this.state.currentPage}
-          allGames={this.state.allGames} allUsers={this.state.allUsers} user={this.state.currentUser} firebase={firebase} db={db} setCurrentUser = {this.updateCurrentUser}/> : "" }
+          allGames={this.state.allGames} allUsers={this.state.allUsers} user={this.state.currentUser} firebase={firebase} db={db}
+          playerReady = {this.state.isPlayerReady} setCurrentUser = {this.updateCurrentUser}/> : "" }
 
         { showComponents }
 
